@@ -108,6 +108,37 @@ document.querySelector('.next3')?.addEventListener('click', () => moveSlide3(1))
 // Инициализация
 showSlide3(0);
 
+// === Слайдер 4: Аналог второго, но для третьей секции
+let slideIndex4 = 0;
+const slider4 = document.querySelector('.slider4');
+const slides4 = document.querySelectorAll('.slide4');
+const totalSlides4 = slides4.length;
+const slidesPerView4 = 2;
+const totalPages4 = Math.ceil(totalSlides4 / slidesPerView4);
+
+// Устанавливаем ширину слайдов
+slides4.forEach(slide => {
+  slide.style.minWidth = `${100 / slidesPerView4}%`;
+});
+
+function showSlide4(pageIndex) {
+  const maxPage = totalPages4 - 1;
+  slideIndex4 = Math.max(0, Math.min(pageIndex, maxPage));
+  const offset = slideIndex4 * slidesPerView4 * (100 / slidesPerView4);
+  slider4.style.transform = `translateX(-${offset}%)`;
+}
+
+function moveSlide4(direction) {
+  showSlide4(slideIndex4 + direction);
+}
+
+// Кнопки для слайдера 3
+document.querySelector('.prev4')?.addEventListener('click', () => moveSlide4(-1));
+document.querySelector('.next4')?.addEventListener('click', () => moveSlide4(1));
+
+// Инициализация
+showSlide4(0);
+
 
 // 🔴 Глобальная функция для совместимости с HTML первого слайдера
 function moveSlide(n) {

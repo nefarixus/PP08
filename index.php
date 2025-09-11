@@ -358,6 +358,52 @@
                     </div>
                 </div>
             </div>
+            <div class="tops-div">
+                <div class="slider4">
+                    <a href="#" class="slide4">
+                        <div class="tops-card-inside">
+                            <div class="block">
+                                <p class="top-card-title">Топ <span>хоррор</span> игр</p>
+                                <p class="top-card-desc">Наша выборка пяти наистрашнейших игр этой недели...</p>
+                                <button>Напугай меня</button>
+                            </div>
+                            <img src="./images/char.png-600.png" alt="1st top">
+                        </div>
+                    </a>
+                    <a href="#" class="slide4">
+                        <div class="tops-card-inside">
+                            <div class="block">
+                                <p class="top-card-title">Топ 5 <span>кастомных домов</span></p>
+                                <p class="top-card-desc">Хотите как можно скорее оказаться в каком-нибудь уникальном месте в VR?</p>
+                                <button>Посмотреть</button>
+                            </div>
+                            <img src="./images/char-big.png-600.png" alt="2nd top">
+                        </div>
+                    </a>
+                    <a href="#" class="slide4">
+                        <div class="tops-card-inside">
+                            <div class="block">
+                                <p class="top-card-title">Топ 5 СайдКвест <span>Эксклюзивов</span></p>
+                                <p class="top-card-desc">Найди это только на нашей платформе!</p>
+                                <button>Посмотреть</button>
+                            </div>
+                            <img src="./images/mario-trend.png-600.png" alt="3rd top">
+                        </div>
+                    </a>
+                    <a href="#" class="slide4">
+                        <div class="tops-card-inside">
+                            <div class="block">
+                                <p class="top-card-title">Топ 5 <span>фитнесс приложений</span></p>
+                                <p class="top-card-desc">Занимаетесь спортом в виртуальной реальности? Вот несколько интересных занятий...</p>
+                                <button>Посмотреть</button>
+                            </div>
+                            <img src="./images/trend-fitness.png-600.png" alt="4th top">
+                        </div>
+                    </a>
+                </div>
+                <button class="prev4">&#10094;</button>
+                <button class="next4">&#10095;</button>
+            </div>
         </main>
         <footer>
 
