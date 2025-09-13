@@ -441,6 +441,7 @@ main {
     font-weight: 300;
     line-height: 24px;
     margin-bottom: 60px;
+    font-weight: bold;
 }
 
 .under-header {
@@ -494,6 +495,7 @@ main {
     color: white;
     font-size: 14px;
     padding: 30px 15px 20px 15px;
+    font-weight: bold;
 }
 
 .prev2, .next2 {
@@ -714,6 +716,7 @@ main {
     color: white;
     font-size: 14px;
     padding: 30px 15px 20px 15px;
+    font-weight: bold;
 }
 
 .prev3, .next3 {
@@ -779,7 +782,7 @@ main {
     min-width: 50%;
 }
 
-.tops-card-inside {
+.tops-card-inside1 {
     position: relative;
     height: 420px;
     display: flex;
@@ -789,7 +792,58 @@ main {
     background-position: -125%;
 }
 
-.tops-card-inside img {
+.tops-card-inside2 {
+    position: relative;
+    height: 420px;
+    display: flex;
+    overflow: hidden;
+    background-image: url(../images/bg.png-15001.png);
+    background-clip: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+    background-position: -125%;
+}
+
+.tops-card-inside3 {
+    position: relative;
+    height: 420px;
+    display: flex;
+    overflow: hidden;
+    background-image: url(../images/bg-trend.png-1500.png);
+    background-clip: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+    background-position: -125%;
+}
+
+.tops-card-inside4 {
+    position: relative;
+    height: 420px;
+    display: flex;
+    overflow: hidden;
+    background-image: url(../images/bg.png-1500\ \(1\).png);
+    background-clip: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+    background-position: -125%;
+}
+
+.tops-card-inside1 img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 420px;
+}
+
+.tops-card-inside2 img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 420px;
+}
+
+.tops-card-inside3 img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 420px;
+}
+
+.tops-card-inside4 img {
     position: absolute;
     right: 0;
     top: 0;
@@ -875,6 +929,141 @@ main {
 }
 
 .prev4:hover, .next4:hover {
+    box-shadow: 
+        0 0 15px rgba(255, 0, 255, 0.9),
+        0 0 30px rgba(255, 0, 255, 0.7),
+        inset 0 0 15px rgba(255, 0, 255, 0.9);
+}
+
+.top-must-plays {
+    position: relative;
+    background-image: url(../images/batman-bg-2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 120px 270px;
+    text-align: center;
+}
+
+.joker-img {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.zombie-img {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.top-title {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.top-title span {
+    font-weight: bold;
+}
+
+.top-must-plays-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 40px;
+    column-gap: 50px;
+    margin-bottom: 55px;
+}
+
+.top-grid-text-container1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    text-align: start;
+}
+
+.top-grid-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: start;
+}
+
+.top-grid1, .top-grid2, .top-grid3 {
+    transition: all .3s ease-in-out;
+}
+
+.top-grid1:hover, .top-grid2:hover, .top-grid3:hover {
+    scale: 1.05;
+}
+
+.top-grid1 {
+    text-decoration: none;
+    color: white;
+    width: 540px;
+    height: 300px;
+    grid-row: span 2;
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-image: url(https://cdn.sidequestvr.com/file/2493152/38974582_430200526505565_3127163190203270290_n.jpg);
+    box-shadow: 0px -90px 17px -9px rgba(0, 0, 0, .9) inset;
+    padding: 25px 30px;
+}
+
+.top-grid2 {
+    text-decoration: none;
+    color: white;
+    display: flex;
+}
+
+.top-grid2 img {
+    width: 220px;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 25px;
+}
+
+.top-grid3 {
+    text-decoration: none;
+    color: white;
+    display: flex;
+}
+
+.top-grid3 img {
+    width: 220px;
+    height: 125px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 25px;
+}
+
+.text1 {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.text2 {
+    opacity: .8;
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+}
+
+.link:hover {
     box-shadow: 
         0 0 15px rgba(255, 0, 255, 0.9),
         0 0 30px rgba(255, 0, 255, 0.7),

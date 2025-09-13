@@ -83,8 +83,8 @@
                             <a href="#">
                                 <div class="banner-card">
                                     <p class="card-title">ArcGlyph</p>
-                                    <p class="card-desc">ArcGlyph is a mixed-reality utility for Quest: summon circles, counters, timers, and procedural creatures in your space</p>
-                                    <p class="find-out-more">Find out more</p>
+                                    <p class="card-desc">ArcGlyph это утилита смешанной реальности для любых задач: призывайте круги, счетчики, таймеры и процедурных существ в своем пространстве.</p>
+                                    <p class="find-out-more">Узнать больше</p>
                                 </div>
                             </a>
                         </div>
@@ -92,8 +92,8 @@
                             <a href="#">
                                 <div class="banner-card">
                                     <p class="card-title">FortiCasa</p>
-                                    <p class="card-desc">Immerse yourself in a unique strategic defense adventure with FortiCasa: AR Robot Defense for Oculus Quest!</p>
-                                    <p class="find-out-more">Find out more</p>
+                                    <p class="card-desc">Погрузитесь в уникальное стратегическое оборонное приключение с FortiCasa: ВР робот дефенс для Oculus Quest!</p>
+                                    <p class="find-out-more">Узнать больше</p>
                                 </div>
                             </a>
                         </div>
@@ -101,8 +101,8 @@
                             <a href="#">
                                 <div class="banner-card">
                                     <p class="card-title">Metacity Patrol</p>
-                                    <p class="card-desc">Explore and protect the districts of Metacity in a free roaming, cyberpunk sandbox adventure.</p>
-                                    <p class="find-out-more">Find out more</p>
+                                    <p class="card-desc">Исследуйте и защищайте районы Metacity в свободной приключенческой киберпанк-песочнице.</p>
+                                    <p class="find-out-more">Узнать больше</p>
                                 </div>
                             </a>
                         </div>
@@ -361,7 +361,7 @@
             <div class="tops-div">
                 <div class="slider4">
                     <a href="#" class="slide4">
-                        <div class="tops-card-inside">
+                        <div class="tops-card-inside1">
                             <div class="block">
                                 <p class="top-card-title">Топ <span>хоррор</span> игр</p>
                                 <p class="top-card-desc">Наша выборка пяти наистрашнейших игр этой недели...</p>
@@ -371,17 +371,17 @@
                         </div>
                     </a>
                     <a href="#" class="slide4">
-                        <div class="tops-card-inside">
+                        <div class="tops-card-inside2">
                             <div class="block">
                                 <p class="top-card-title">Топ 5 <span>кастомных домов</span></p>
-                                <p class="top-card-desc">Хотите как можно скорее оказаться в каком-нибудь уникальном месте в VR?</p>
+                                <p class="top-card-desc">Хотите как можно скорее оказаться в каком-нибудь уникальном месте <br>в VR?</p>
                                 <button>Посмотреть</button>
                             </div>
                             <img src="./images/char-big.png-600.png" alt="2nd top">
                         </div>
                     </a>
                     <a href="#" class="slide4">
-                        <div class="tops-card-inside">
+                        <div class="tops-card-inside3">
                             <div class="block">
                                 <p class="top-card-title">Топ 5 СайдКвест <span>Эксклюзивов</span></p>
                                 <p class="top-card-desc">Найди это только на нашей платформе!</p>
@@ -391,10 +391,10 @@
                         </div>
                     </a>
                     <a href="#" class="slide4">
-                        <div class="tops-card-inside">
+                        <div class="tops-card-inside4">
                             <div class="block">
                                 <p class="top-card-title">Топ 5 <span>фитнесс приложений</span></p>
-                                <p class="top-card-desc">Занимаетесь спортом в виртуальной реальности? Вот несколько интересных занятий...</p>
+                                <p class="top-card-desc">Занимаетесь спортом в виртуальной реальности? Вот несколько <br>интересных занятий...</p>
                                 <button>Посмотреть</button>
                             </div>
                             <img src="./images/trend-fitness.png-600.png" alt="4th top">
@@ -403,6 +403,34 @@
                 </div>
                 <button class="prev4">&#10094;</button>
                 <button class="next4">&#10095;</button>
+            </div>
+            <div class="top-must-plays">
+                <img src="https://cdn.sidequestvr.com/file/2298807/batman-left-v4.png" alt="" class="joker-img">
+                <img src="https://cdn.sidequestvr.com/file/2298808/right.png" alt="" class="zombie-img">
+                <p class="top-title"><span>Топ</span> Мастхевов!</p>
+                <div class="top-must-plays-grid">
+                    <a href="#" class="top-grid1">
+                        <div class="top-grid-text-container1">
+                            <p class="text1">Бэтмен: Тени Аркхэма</p>
+                            <p class="text2">Платно</p>
+                        </div>
+                    </a>
+                    <a href="#" class="top-grid2">
+                        <img src="https://cdn.sidequestvr.com/file/2491141/39031485_1160489718016281_3050468458242801597_n.jpg" alt="">
+                        <div class="top-grid-text-container">
+                            <p class="text1">BONELAB</p>
+                            <p class="text2">Платно</p>
+                        </div>
+                    </a>
+                    <a href="#" class="top-grid3">
+                        <img src="https://cdn.sidequestvr.com/file/2490798/39031497_875215037171957_3000930639070807095_n.jpg" alt="">
+                        <div class="top-grid-text-container">
+                            <p class="text1">Assassin's Creed® Nexus</p>
+                            <p class="text2">Платно</p>
+                        </div>
+                    </a>
+                </div>
+                <a class="link" href="#" >Покажите мне больше!</a>
             </div>
         </main>
         <footer>
