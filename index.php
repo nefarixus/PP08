@@ -430,7 +430,94 @@
                         </div>
                     </a>
                 </div>
-                <a class="link" href="#" >Покажите мне больше!</a>
+                <a class="link" href="#">Покажите мне больше!</a>
+            </div>
+            <div class="last-container">
+                <div class="last-container-banner">
+                    <img src="https://cdn.sidequestvr.com/file/2489194/star-wars-beyond-victory-ilm-meta-immersive-copy.jpg" alt="">
+                    <p class="article-text">Добро пожаловать в СайдКвест! Ознакомьтесь с нашими</p>
+                    <p class="article-title">Статья — Star Wars: Beyond Victory — раскрыты режим игры и дата выхода</p>
+                    <p class="article-who-time">от Татьяна СайдКвест --- 11 сентября 2025 г.</p>
+                    <a href="#" class="article-link">Прочитать статью</a>
+                </div>
+                <div class="fifth-slider">
+                    <div class="last-container-slider">
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                        <a href="#" class="slide5">
+                            <div class="tops-card-inside5">
+                                <div class="block">
+                                    <p class="top-card-title5">Все приложения</span></p>
+                                </div>
+                                <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
+                            </div>
+                        </a>
+                    </div>
+                    <button class="prev5">&#10094;</button>
+                    <button class="next5">&#10095;</button>
+                </div>
             </div>
         </main>
         <footer>

@@ -139,6 +139,42 @@ document.querySelector('.next4')?.addEventListener('click', () => moveSlide4(1))
 // Инициализация
 showSlide4(0);
 
+// === Слайдер 5: Прокрутка по 3 карточки из 4 видимых
+let slideIndex5 = 0;
+
+const slider5 = document.querySelector('.last-container-slider');
+const slides5 = document.querySelectorAll('.slide5');
+
+const totalSlides5 = slides5.length;
+const slidesPerView5 = 4;     // Отображаем 4 карточки
+const slidesToScroll = 1;     // Прокручиваем по 3 за раз
+const totalPages5 = Math.ceil((totalSlides5 - slidesPerView5 + slidesToScroll) / slidesToScroll);
+
+// Устанавливаем ширину каждой карточки
+slides5.forEach(slide => {
+  slide.style.maxWidth = `${100 / slidesPerView5}%`; // 25% на карточку
+});
+
+function showSlide5(pageIndex) {
+  const maxPage = totalPages5 - 1;
+  slideIndex5 = Math.max(0, Math.min(pageIndex, maxPage));
+
+  // Сдвигаем на количество прокручиваемых карточек × ширину одной
+  const offset = slideIndex5 * slidesToScroll * (100 / slidesPerView5);
+  slider5.style.transform = `translateX(-${offset}%)`;
+}
+
+function moveSlide5(direction) {
+  showSlide5(slideIndex5 + direction);
+}
+
+// Подключаем кнопки
+document.querySelector('.prev5')?.addEventListener('click', () => moveSlide5(-1));
+document.querySelector('.next5')?.addEventListener('click', () => moveSlide5(1));
+
+// Инициализация
+showSlide5(0);
+
 
 // 🔴 Глобальная функция для совместимости с HTML первого слайдера
 function moveSlide(n) {
