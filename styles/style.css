@@ -1245,3 +1245,65 @@ main {
 .slide5 a {
     text-decoration: none;
 }
+
+footer {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 70px 50px;
+}
+
+.left-footer-div {
+    display: flex;
+    align-items: center;
+}
+
+.left-footer-div img {
+    margin-right: 30px;
+    height: auto;
+    width: 145px;
+}
+
+.left-footer-div ul {
+    display: flex;
+    gap: 5px;
+}
+
+.left-footer-div ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.left-footer-div ul li {
+    position: relative;
+    padding-right: 10px;
+    list-style: none;
+    font-size: 14px;
+}
+
+.left-footer-div ul li::after {
+    content: '|';
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #888;
+    font-weight: bold;
+}
+
+.left-footer-div ul li:last-child::after {
+    display: none;
+}
+
+.right-footer-div {
+    display: flex;
+    gap: 20px;
+}
+
+.right-footer-div a img {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 50%;
+    border: 1px solid #222;
+}
