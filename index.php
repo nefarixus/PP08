@@ -20,7 +20,7 @@
             <div class="search">
                 <form action="?" method="post">
                     <div class="search-box">
-                        <input type="text" placeholder="Поиск по СайдКвесту..." id="searchInput"/>
+                        <input type="text" placeholder="Поиск по СайдКвесту..." id="searchInput">
                     </div>
                 </form>
             </div>
@@ -214,7 +214,7 @@
                                 <a href="#">
                                     <div class="banner-card-more">
                                         <p class="card-desc-more">Хочешь больше?</p>
-                                        <a href="#" class="button-more">Начни искать</a>
+                                        <p class="button-more">Начни искать</p>
                                     </div>
                                 </a>
                             </div>
@@ -237,7 +237,7 @@
                         <img src="https://cdn.sidequestvr.com/file/2467809/sale-large.png" alt="img-card2">
                     </div>
                 </a>
-                <a href=""# class="card-menu-card3">
+                <a href="#" class="card-menu-card3">
                     <div>
                         <p class="menu-card-text2">Самые <br><span>странные ВР игры!</span></p>
                         <img src="https://cdn.sidequestvr.com/file/2467812/weirdest-large.png" alt="img-card3">
@@ -348,7 +348,7 @@
                                 <a href="#">
                                     <div class="banner-card-more">
                                         <p class="card-desc-more">Хочешь больше?</p>
-                                        <a href="#" class="button-more">Начни искать</a>
+                                        <p class="button-more">Начни искать</p>
                                     </div>
                                 </a>
                             </div>
@@ -365,7 +365,7 @@
                             <div class="block">
                                 <p class="top-card-title">Топ <span>хоррор</span> игр</p>
                                 <p class="top-card-desc">Наша выборка пяти наистрашнейших игр этой недели...</p>
-                                <button>Напугай меня</button>
+                                <p class="slide-button">Напугай меня</p>
                             </div>
                             <img src="./images/char.png-600.png" alt="1st top">
                         </div>
@@ -375,7 +375,7 @@
                             <div class="block">
                                 <p class="top-card-title">Топ 5 <span>кастомных домов</span></p>
                                 <p class="top-card-desc">Хотите как можно скорее оказаться в каком-нибудь уникальном месте <br>в VR?</p>
-                                <button>Посмотреть</button>
+                                <p class="slide-button">Посмотреть</p>
                             </div>
                             <img src="./images/char-big.png-600.png" alt="2nd top">
                         </div>
@@ -385,7 +385,7 @@
                             <div class="block">
                                 <p class="top-card-title">Топ 5 СайдКвест <span>Эксклюзивов</span></p>
                                 <p class="top-card-desc">Найди это только на нашей платформе!</p>
-                                <button>Посмотреть</button>
+                                <p class="slide-button">Посмотреть</p>
                             </div>
                             <img src="./images/mario-trend.png-600.png" alt="3rd top">
                         </div>
@@ -395,7 +395,7 @@
                             <div class="block">
                                 <p class="top-card-title">Топ 5 <span>фитнесс приложений</span></p>
                                 <p class="top-card-desc">Занимаетесь спортом в виртуальной реальности? Вот несколько <br>интересных занятий...</p>
-                                <button>Посмотреть</button>
+                                <p class="slide-button">Посмотреть</p>
                             </div>
                             <img src="./images/trend-fitness.png-600.png" alt="4th top">
                         </div>
@@ -445,7 +445,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -453,7 +453,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -461,7 +461,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -469,7 +469,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -477,7 +477,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -485,7 +485,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -493,7 +493,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -501,7 +501,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>
@@ -509,7 +509,7 @@
                         <a href="#" class="slide5">
                             <div class="tops-card-inside5">
                                 <div class="block">
-                                    <p class="top-card-title5">Все приложения</span></p>
+                                    <p class="top-card-title5"><span>Все приложения</span></p>
                                 </div>
                                 <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                             </div>

@@ -558,6 +558,7 @@ main {
     border: 1px white solid;
     border-radius: 50px;
     transition: all .3s ease-in-out;
+    cursor: pointer;
 }
 
 .button-more:hover {
@@ -854,11 +855,11 @@ main {
     transition: transform 0.5s ease;
 }
 
-.slide4 p, .slide4 button {
+.slide4 p, .slide4 .slide-button {
     color: white;
 }
 
-.slide4 button {
+.slide4 .slide-button {
     background-color: rgba(0, 0, 0, 0);
     border: 1px solid white;
     padding: 15px 30px;
@@ -867,7 +868,7 @@ main {
     cursor: pointer;
 }
 
-.slide4 button:hover {
+.slide4 .slide-button:hover {
     box-shadow: 
         0 0 15px rgba(255, 0, 255, 0.9),
         0 0 30px rgba(255, 0, 255, 0.7),
@@ -889,7 +890,7 @@ main {
     margin-left: 70px;
 }
 
-.block p, .block button {
+.block p, .block .slide-button {
     max-width: max-content;
 }  
 
