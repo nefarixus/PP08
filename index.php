@@ -66,7 +66,7 @@
         <div class="auth">
             <a href="#"><img src="./images/profile.svg" alt="account picture" class="auth-img"></a>
             <div class="auth-buttons">
-                <a href="#" class="login">Войти или <br> Зарегестрироваться</a>
+                <a href="./pages/login.php" class="login">Войти или <br> Зарегестрироваться</a>
                 <a href="#" class="account">Мой аккаунт</a>
             </div>
         </div>
