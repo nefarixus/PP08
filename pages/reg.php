@@ -77,14 +77,19 @@
                 <div class="login-container">
                     <h2>Sign up for an account</h2>
 
-                    <form action="#" method="post">
+                    <form action="../register.php" method="post">
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input type="email" id="email" name="email" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="password">Create Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+
                         <div class="btn-group">
-                            <button type="submit" class="btn-login">Send Verification Link</button>
+                            <button type="submit" class="btn-login">Sign Up</button>
                             <div class="social-icons">
                                 <div class="social-btn"><img src="../images/ic_baseline-discord.png" alt="Discord"></div>
                                 <div class="social-btn"><img src="../images/mdi_github.png" alt="Steam"></div>

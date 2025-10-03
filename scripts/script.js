@@ -180,3 +180,23 @@ showSlide5(0);
 function moveSlide(n) {
   moveSlide1(n);
 }
+
+// === Мобильное меню-бургер ===
+const burger = document.querySelector('.burger-menu');
+const aside = document.querySelector('aside');
+const overlay = document.querySelector('.overlay');
+const container = document.getElementById('main-container');
+
+burger?.addEventListener('click', () => {
+  burger.classList.toggle('active');
+  aside.classList.toggle('open');
+  overlay.classList.toggle('active');
+  document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : '';
+});
+
+overlay?.addEventListener('click', () => {
+  burger.classList.remove('active');
+  aside.classList.remove('open');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
+});
