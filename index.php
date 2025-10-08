@@ -32,7 +32,7 @@
             <nav class="primary-nav">
                 <div class="nav-block">
                     <img src="./images/home.svg" alt="navigation icon" class="icon">
-                    <a href="#" class="nav-text">Главная</a>
+                    <a href="./index.php" class="nav-text">Главная</a>
                 </div>
                 <div class="nav-block">
                     <img src="./images/download.svg" alt="navigation icon" class="icon">
@@ -69,11 +69,23 @@
             <p>здесь могла бы быть ваша реклама</p>
         </div>
         <div class="auth">
-            <a href="#"><img src="./images/profile.svg" alt="account picture" class="auth-img"></a>
-            <div class="auth-buttons">
-                <a href="./pages/login.php" class="login">Войти или <br> Зарегестрироваться</a>
-                <a href="#" class="account">Мой аккаунт</a>
-            </div>
+            <?php
+            session_start();
+            if (isset($_SESSION['user_id'])): ?>
+                <!-- Пользователь авторизован -->
+                <div class="auth-buttons">
+                    <p class="login"><?= htmlspecialchars($_SESSION['login']) ?></p>
+                    <a href="./pages/profile.php" class="account">Мой аккаунт</a>
+                    <a href="logout.php" class="account" style="color: #ff4444; border: 0;">Выход</a>
+                </div>
+            <?php else: ?>
+                <!-- Гость -->
+                <a href="#"><img src="./images/profile.svg" alt="account picture" class="auth-img"></a>
+                <div class="auth-buttons">
+                    <a href="pages/login.php" class="login">Войти или <br> Зарегестрироваться</a>
+                    <a href="#" class="account">Мой аккаунт</a>
+                </div>
+            <?php endif; ?>
         </div>
     </aside>
     <div class="page-wrapper">
@@ -126,96 +138,61 @@
                     <div class="second-header">
                         <div class="main-second-header">
                             <div class="slider2">
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/Listing_play_for_free.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Jolly Match-3 в ВР!</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/copy-of-meta_asset_cover_trailer_2560x1440_only.png" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Maestro</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/banter_new_listing_v3_copy-1-1.png" alt="banner card" class="card-image">
-                                            <p class="card-desc2">BANTER</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/app-lab-cover-art-landscape_new.png" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Metacity patrol</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/38974446_1776802149753873_1245728995774615929_n.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Cave Crave</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/oktoberfest-rides-store-cover-square.png" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Oktoberfest</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/mym_landscape_2560x1440.png" alt="banner card" class="card-image">
-                                            <p class="card-desc2">My Monsters</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/499307426_1707159933498868_8457147349349778285_n.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Grit and Valor</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/499617803_2485113945220600_1576221352827465812_n.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Frost Survival ВР</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide2">
-                                    <a href="#">
-                                        <div class="banner-card2">
-                                            <img src="./images/sidequesta2listingimage.png" alt="banner card" class="card-image">
-                                            <p class="card-desc2">Arcaxer 2</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
+                                <?php
+                                // Подключение к БД
+                                $host = '127.0.0.1';
+                                $dbname = 'sidequest';
+                                $username = 'root';
+                                $password_db = '';
+
+                                try {
+                                    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password_db);
+                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                } catch (PDOException $e) {
+                                    echo '<div class="slide2"><p>Ошибка подключения к БД</p></div>';
+                                    exit;
+                                }
+
+                                // Получаем ID игр из библиотеки пользователя (только если авторизован)
+                                $user_library = [];
+                                if (isset($_SESSION['user_id'])) {
+                                    $stmt = $pdo->prepare("
+                                        SELECT product_id FROM user_products WHERE user_id = ?
+                                    ");
+                                    $stmt->execute([$_SESSION['user_id']]);
+                                    $user_library = $stmt->fetchAll(PDO::FETCH_COLUMN); // массив ID: [1, 5, 7]
+                                }
+
+                                // Получаем все приложения
+                                $stmt = $pdo->query("SELECT * FROM products ORDER BY id");
+                                $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                if (empty($products)) {
+                                    echo '<div class="slide2"><p>Нет доступных приложений</p></div>';
+                                } else {
+                                    foreach ($products as $product) {
+                                        $is_in_library = in_array($product['id'], $user_library);
+
+                                        echo '
+                                        <div class="slide2">
+                                            <a href="#">
+                                                <div class="banner-card2">
+                                                    <img src="./images/' . htmlspecialchars($product['img']) . '" alt="banner card" class="card-image">
+                                                    <p class="card-desc2">' . htmlspecialchars($product['name']) . '</p>
+                                                    <div class="rating"></div>
+                                                </div>
+                                            </a>
+                                            <button type="button" 
+                                                    class="add-button" 
+                                                    data-product-id="' . $product['id'] . '"
+                                                    ' . ($is_in_library ? 'disabled' : '') . '>
+                                                ' . ($is_in_library ? 'Уже в библиотеке' : 'Добавить') . '
+                                            </button>
+                                        </div>';
+                                    }
+                                }
+                                // Последняя карточка — "Хочешь больше?"
+                                echo '
                                 <div class="slide2">
                                     <a href="#">
                                         <div class="banner-card-more">
@@ -223,7 +200,8 @@
                                             <p class="button-more">Начни искать</p>
                                         </div>
                                     </a>
-                                </div>
+                                </div>';
+                                ?>
                             </div>
                             <button class="prev2">&#10094;</button>
                             <button class="next2">&#10095;</button>
@@ -255,114 +233,6 @@
                             <p class="menu-card-text">Лучшее <br><span>Замиксуй реальность</span></p>
                         </div>
                     </a>
-                </div>
-                <div class="under-header">
-                    <div class="third-header">
-                        <div class="main-third-header">
-                            <div class="slider3">
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/Listing_play_for_free.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Jolly Match-3 в ВР!</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/copy-of-meta_asset_cover_trailer_2560x1440_only.png" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Maestro</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/banter_new_listing_v3_copy-1-1.png" alt="banner card" class="card-image">
-                                            <p class="card-desc3">BANTER</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/app-lab-cover-art-landscape_new.png" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Metacity patrol</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/38974446_1776802149753873_1245728995774615929_n.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Cave Crave</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/oktoberfest-rides-store-cover-square.png" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Oktoberfest</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/mym_landscape_2560x1440.png" alt="banner card" class="card-image">
-                                            <p class="card-desc3">My Monsters</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/499307426_1707159933498868_8457147349349778285_n.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Grit and Valor</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/499617803_2485113945220600_1576221352827465812_n.jpg" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Frost Survival ВР</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card3">
-                                            <img src="./images/sidequesta2listingimage.png" alt="banner card" class="card-image">
-                                            <p class="card-desc3">Arcaxer 2</p>
-                                            <div class="rating"></div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="slide3">
-                                    <a href="#">
-                                        <div class="banner-card-more">
-                                            <p class="card-desc-more">Хочешь больше?</p>
-                                            <p class="button-more">Начни искать</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <button class="prev3">&#10094;</button>
-                            <button class="next3">&#10095;</button>
-                        </div>
-                    </div>
                 </div>
                 <div class="tops-div">
                     <div class="slider4">

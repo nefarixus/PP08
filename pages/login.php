@@ -37,7 +37,7 @@
             <nav class="primary-nav">
                 <div class="nav-block">
                     <img src="../images/home.svg" alt="navigation icon" class="icon">
-                    <a href="#" class="nav-text">Главная</a>
+                    <a href="../index.php" class="nav-text">Главная</a>
                 </div>
                 <div class="nav-block">
                     <img src="../images/download.svg" alt="navigation icon" class="icon">
@@ -87,21 +87,21 @@
                 <div class="login-container">
                     <h2>Login now to explore...</h2>
 
-                    <form action="#" method="post">
+                    <form action="../auth.php" method="post">
                         <div class="form-group">
-                            <label for="email">What's your email?</label>
+                            <label for="email">Какая у вас почта?</label>
                             <input type="email" id="email" name="email" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="password">What's your password?</label>
+                            <label for="password">Какой у вас пароль?</label>
                             <input type="password" id="password" name="password" required>
                         </div>
 
-                        <a href="#" class="forgot-password">Forgot Password?</a>
+                        <a href="#" class="forgot-password">Забыли пароль?</a>
 
                         <div class="btn-group">
-                            <button type="submit" class="btn-login">Sign In</button>
+                            <button type="submit" class="btn-login">Войти</button>
                             <div class="social-icons">
                                 <div class="social-btn"><img src="../images/ic_baseline-discord.png" alt="Discord"></div>
                                 <div class="social-btn"><img src="../images/mdi_github.png" alt="Steam"></div>
@@ -111,8 +111,8 @@
                     </form>
 
                     <div class="login-footer">
-                        <p>Don't have an account?</p>
-                        <a href="reg.php">Sign up here</a>
+                        <p>Нет аккаунта?</p>
+                        <a href="reg.php">Создайте здесь!</a>
                     </div>
                 </div>
             </div>

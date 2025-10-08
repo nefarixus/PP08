@@ -76,38 +76,6 @@ document.querySelector('.next2')?.addEventListener('click', () => moveSlide2(1))
 // Инициализация
 showSlide2(0);
 
-
-// === Слайдер 3: Аналог второго, но для третьей секции
-let slideIndex3 = 0;
-const slider3 = document.querySelector('.slider3');
-const slides3 = document.querySelectorAll('.slide3');
-const totalSlides3 = slides3.length;
-const slidesPerView3 = 6;
-const totalPages3 = Math.ceil(totalSlides3 / slidesPerView3);
-
-// Устанавливаем ширину слайдов
-slides3.forEach(slide => {
-  slide.style.minWidth = `${100 / slidesPerView3}%`;
-});
-
-function showSlide3(pageIndex) {
-  const maxPage = totalPages3 - 1;
-  slideIndex3 = Math.max(0, Math.min(pageIndex, maxPage));
-  const offset = slideIndex3 * slidesPerView3 * (100 / slidesPerView3);
-  slider3.style.transform = `translateX(-${offset}%)`;
-}
-
-function moveSlide3(direction) {
-  showSlide3(slideIndex3 + direction);
-}
-
-// Кнопки для слайдера 3
-document.querySelector('.prev3')?.addEventListener('click', () => moveSlide3(-1));
-document.querySelector('.next3')?.addEventListener('click', () => moveSlide3(1));
-
-// Инициализация
-showSlide3(0);
-
 // === Слайдер 4: Аналог второго, но для третьей секции
 let slideIndex4 = 0;
 const slider4 = document.querySelector('.slider4');
@@ -199,4 +167,32 @@ overlay?.addEventListener('click', () => {
   aside.classList.remove('open');
   overlay.classList.remove('active');
   document.body.style.overflow = '';
+});
+
+document.querySelectorAll('.add-button').forEach(button => {
+    button.addEventListener('click', async function() {
+        const productId = this.dataset.productId;
+        const response = await fetch('add_to_library_ajax.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'product_id=' + productId
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            if (result.success) {
+                // Меняем текст и блокируем кнопку
+                this.textContent = 'Уже в библиотеке';
+                this.disabled = true;
+
+                setTimeout(() => {
+                    alert('Приложение добавлено в библиотеку!');
+                }, 100);
+            } else if (result.error) {
+                alert(result.error);
+            }
+        } else {
+            alert('Ошибка при добавлении');
+        }
+    });
 });

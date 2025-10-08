@@ -1503,6 +1503,24 @@ input[type="password"]:focus {
   border-radius: 2px;
 }
 
+.add-button {
+    margin-top: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    transition: all 1s ease-in-out;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    box-shadow: 
+        0 0 15px rgba(255, 0, 255, 0.9),
+        0 0 30px rgba(255, 0, 255, 0.7),
+        inset 0 0 15px rgba(255, 0, 255, 0.9);
+}
+
 /* Анимация бургера */
 .burger-menu.active span:nth-child(1) {
   transform: rotate(-45deg) translate(-6px, 6px);
@@ -1514,77 +1532,8 @@ input[type="password"]:focus {
   transform: rotate(45deg) translate(-6px, -6px);
 }
 
-/* --- Для планшетов (макс. 1024px) --- */
-@media (max-width: 1024px) {
-    aside {
-        width: 280px;
-    }
-    .container {
-        margin-left: 280px;
-        width: calc(100% - 280px);
-    }
-    .logo-text {
-        font-size: 15px;
-    }
-    .icon {
-        width: 16px;
-        height: 16px;
-    }
-    .nav-text {
-        font-size: 13px;
-    }
-    .secondary-nav .nav-text {
-        font-size: 13px;
-    }
-    .header {
-        padding: 0 20px;
-    }
-    .under-header {
-        padding: 0 20px;
-    }
-    .card-menu {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        row-gap: 30px;
-        padding: 50px 30px;
-    }
-    .card-menu-card1,
-    .card-menu-card4 {
-        height: 400px;
-    }
-    .tops-div {
-        display: none; /* Скрыть сложные слайдеры на малых экранах */
-    }
-    .top-must-plays {
-        padding: 60px 20px;
-    }
-    .top-must-plays-grid {
-        grid-template-columns: 1fr;
-        row-gap: 20px;
-    }
-    .top-grid1 {
-        grid-row: span 1;
-    }
-    .last-container {
-        grid-template-columns: 1fr;
-        padding: 30px 20px;
-        gap: 30px;
-    }
-    .last-container-banner {
-        width: 100%;
-        height: auto;
-        min-height: 300px;
-    }
-    .fifth-slider {
-        display: none;
-    }
-}
-
 /* --- Для мобильных (макс. 768px) --- */
 @media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
     .burger-menu {
         display: block;
     }
@@ -1644,213 +1593,5 @@ input[type="password"]:focus {
     }
     .nav-text {
         font-size: 14px;
-    }
-
-    /* Главный слайдер */
-    .header {
-        padding: 0 10px;
-    }
-    .main-header {
-        margin-top: 20px;
-    }
-    .slider {
-        height: 300px;
-    }
-    .banner-card {
-        padding: 30px 20px;
-        width: 280px;
-    }
-    .card-title {
-        font-size: 18px;
-    }
-    .card-desc {
-        font-size: 13px;
-        margin-bottom: 40px;
-    }
-
-    /* Подзаголовки и кнопки */
-    .container-signup-button {
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 20px 0;
-    }
-    .neon-button {
-        font-size: 16px;
-        padding: 12px 24px;
-    }
-
-    /* Карточки меню */
-    .card-menu {
-        padding: 30px 15px;
-        row-gap: 20px;
-    }
-    .card-menu-card1,
-    .card-menu-card2,
-    .card-menu-card3,
-    .card-menu-card4 {
-        width: 100%;
-        height: auto;
-    }
-    .menu-card-text,
-    .menu-card-text2 {
-        padding: 30px 20px;
-        line-height: 24px;
-    }
-    .menu-card-text span,
-    .menu-card-text2 span {
-        font-size: 18px;
-    }
-
-    /* Блок "Топ игр" */
-    .top-must-plays {
-        padding: 40px 15px;
-    }
-    .top-title {
-        font-size: 20px;
-    }
-
-    /* Последний блок */
-    .last-container {
-        padding: 20px 15px;
-        gap: 20px;
-    }
-    .last-container-banner {
-        padding: 30px 20px;
-    }
-    .article-title {
-        font-size: 20px;
-    }
-    footer {
-        padding: 40px 20px;
-    }
-    .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        transition: opacity 0.3s ease;
-    }
-
-    .overlay.active {
-        display: block;
-        opacity: 1;
-    }
-}
-
-/* --- Для маленьких телефонов (макс. 480px) --- */
-@media (max-width: 480px) {
-    aside {
-        display: none;
-    }
-    .container {
-        margin-left: 0;
-        padding: 0 10px;
-    }
-    .burger-menu {
-        display: block !important;
-        z-index: 1001;
-    }
-    .aside-scroll {
-        display: none;
-    }
-    .logo {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        z-index: 1001;
-    }
-    .logo img {
-        width: 20px;
-        height: 20px;
-    }
-    .logo-text {
-        display: none;
-    }
-    .auth {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        z-index: 1001;
-    }
-    .auth-img {
-        max-width: 40px;
-        max-height: 40px;
-    }
-    .login,
-    .account {
-        display: none;
-    }
-
-    .container {
-        margin-left: 0;
-        padding: 0 10px;
-    }
-    .header {
-        padding: 0 10px;
-    }
-    .banner-card {
-        width: 250px;
-        padding: 20px;
-    }
-    .card-title {
-        font-size: 16px;
-    }
-    .card-desc {
-        font-size: 12px;
-    }
-    .find-out-more {
-        font-size: 14px;
-    }
-    .dots {
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
-    .dot {
-        width: 50px;
-        height: 4px;
-    }
-
-    .container-signup-button {
-        padding: 15px 0;
-    }
-    .neon-button {
-        font-size: 14px;
-        padding: 10px 20px;
-    }
-    .card-menu {
-        padding: 20px 10px;
-    }
-    .menu-card-text,
-    .menu-card-text2 {
-        padding: 20px 15px;
-    }
-    .slide2,
-    .slide3 {
-        min-width: 100%;
-    }
-    footer {
-        padding: 40px 15px;
-        flex-direction: column;
-        text-align: center;
-        gap: 20px;
-    }
-    .left-footer-div ul {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .left-footer-div ul li {
-        padding-right: 15px;
-    }
-    .right-footer-div {
-        gap: 10px;
-    }
-    .right-footer-div a img {
-        width: 40px;
-        height: 40px;
-        padding: 8px;
     }
 }

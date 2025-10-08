@@ -27,7 +27,7 @@
             <nav class="primary-nav">
                 <div class="nav-block">
                     <img src="../images/home.svg" alt="navigation icon" class="icon">
-                    <a href="#" class="nav-text">Главная</a>
+                    <a href="../index.php" class="nav-text">Главная</a>
                 </div>
                 <div class="nav-block">
                     <img src="../images/download.svg" alt="navigation icon" class="icon">
@@ -79,17 +79,17 @@
 
                     <form action="../register.php" method="post">
                         <div class="form-group">
-                            <label for="email">Email address</label>
+                            <label for="email">Почтовый адрес</label>
                             <input type="email" id="email" name="email" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Create Password</label>
+                            <label for="password">Сделайте пароль</label>
                             <input type="password" id="password" name="password" required>
                         </div>
 
                         <div class="btn-group">
-                            <button type="submit" class="btn-login">Sign Up</button>
+                            <button type="submit" class="btn-login">Зарегестрироваться</button>
                             <div class="social-icons">
                                 <div class="social-btn"><img src="../images/ic_baseline-discord.png" alt="Discord"></div>
                                 <div class="social-btn"><img src="../images/mdi_github.png" alt="Steam"></div>
@@ -99,8 +99,8 @@
                     </form>
 
                     <div class="login-footer">
-                        <p>Already have an account?</p>
-                        <a href="login.php">Log in here</a>
+                        <p>Уже есть аккаунт?</p>
+                        <a href="login.php">Войдите здесь!</a>
                     </div>
                 </div>
             </div>
