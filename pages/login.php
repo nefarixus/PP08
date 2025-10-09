@@ -85,7 +85,7 @@
         <main>
             <div class="main-login">
                 <div class="login-container">
-                    <h2>Login now to explore...</h2>
+                    <h2>Войдите сейчас, чтобы исследовать...</h2>
 
                     <form action="../auth.php" method="post">
                         <div class="form-group">

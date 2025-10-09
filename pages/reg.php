@@ -75,7 +75,7 @@
         <main>
             <div class="main-login">
                 <div class="login-container">
-                    <h2>Sign up for an account</h2>
+                    <h2>Зарегистрируйте учетную запись</h2>
 
                     <form action="../register.php" method="post">
                         <div class="form-group">
