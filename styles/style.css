@@ -357,7 +357,6 @@ main {
     transition: transform 0.5s ease;
     height: 450px;
     width: 100%;
-    
 }
 
 .slide {
@@ -1521,77 +1520,34 @@ input[type="password"]:focus {
         inset 0 0 15px rgba(255, 0, 255, 0.9);
 }
 
-/* Анимация бургера */
-.burger-menu.active span:nth-child(1) {
-  transform: rotate(-45deg) translate(-6px, 6px);
-}
-.burger-menu.active span:nth-child(2) {
-  opacity: 0;
-}
-.burger-menu.active span:nth-child(3) {
-  transform: rotate(45deg) translate(-6px, -6px);
+.mobile-warning {
+    display: none;
 }
 
-/* --- Для мобильных (макс. 768px) --- */
-@media (max-width: 768px) {
-    .burger-menu {
-        display: block;
-    }
+@media screen and (max-width: 768px) {
     aside {
-        position: fixed;
-        top: 0;
-        left: -320px;
-        width: 320px;
-        height: 100vh;
-        transition: left 0.3s ease;
-        z-index: 1001;
-        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-    }
-    aside.open {
-        left: 0;
-    }
-    .logo-text,
-    .nav-text,
-    .secondary-nav .nav-text,
-    .search-box input,
-    .auth-buttons {
         display: none;
     }
-    .aside-scroll {
-        padding: 20px;
+    .page-wrapper {
+        display: none;
     }
     .container {
-        margin-left: 0 !important;
-        width: 100% !important;
-        transition: margin-left 0.3s ease;
+        display: none;
     }
-    .logo {
-        justify-content: flex-start;
-        margin-bottom: 15px;
+    .overlay {
+        display: none;
     }
-    .logo img {
-        margin: 0 auto;
-        display: block;
-    }
-    .logo-text {
-        font-size: 16px;
-        margin-left: 10px;
-    }
-    .search-box input {
-        padding: 8px 12px;
-        font-size: 14px;
-    }
-    .primary-nav {
-        margin-top: 20px;
-    }
-    .nav-block {
-        height: 45px;
-    }
-    .icon {
-        margin: 0 auto 10px;
-        display: block;
-    }
-    .nav-text {
-        font-size: 14px;
+    .mobile-warning {
+        width: 100%;
+        text-align: center;
+        padding: 50px 20px;
+        color: white;
+        font-family: 'Roboto', sans-serif;
+        background: #0f0f0f;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }

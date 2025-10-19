@@ -118,6 +118,10 @@
     </style>
 </head>
 <body>
+    <div class="mobile-warning">
+        <p>Сайт разработан для просмотра на компьютере.</p>
+        <p>Пожалуйста, откройте его с десктопного устройства для лучшего опыта.</p>
+    </div>
     <?php include '../aside.php'; ?>
     <div class="page-wrapper">
         <div class="container">

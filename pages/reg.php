@@ -9,6 +9,10 @@
     <title>Бета | СайдКвест</title>
 </head>
 <body>
+    <div class="mobile-warning">
+        <p>Сайт разработан для просмотра на компьютере.</p>
+        <p>Пожалуйста, откройте его с десктопного устройства для лучшего опыта.</p>
+    </div>
     <aside>
         <div class="aside-scroll">
             <a href="../index.php">

@@ -9,10 +9,9 @@
     <title>Бета | СайдКвест</title>
 </head>
 <body>
-    <div class="burger-menu">
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="mobile-warning">
+        <p>Сайт разработан для просмотра на компьютере.</p>
+        <p>Пожалуйста, откройте его с десктопного устройства для лучшего опыта.</p>
     </div>
     <aside>
         <div class="aside-scroll">
