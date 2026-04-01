@@ -55,12 +55,16 @@
     <div class="auth">
         <?php
         session_start();
+        $is_admin = (($_SESSION['role'] ?? null) === 'admin') || (($_SESSION['login'] ?? null) === 'admin');
         if (isset($_SESSION['user_id'])): ?>
             <!-- Пользователь авторизован -->
             <div class="auth-buttons">
                 <p class="login"><?= htmlspecialchars($_SESSION['login']) ?></p>
                 <a href="./profile.php" class="account">Мой аккаунт</a>
-                <a href="../logout.php" class="account" style="color: #ff4444; border: 0;">Выход</a>
+                <?php if ($is_admin): ?>
+                    <a href="./admin_products.php" class="account account-admin">Админка</a>
+                <?php endif; ?>
+                <a href="../logout.php" class="account account-logout" style="color: #ff4444; border: 0;">Выход</a>
             </div>
         <?php else: ?>
             <!-- Гость -->

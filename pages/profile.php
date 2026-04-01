@@ -39,73 +39,148 @@
     <title>Профиль — <?= htmlspecialchars($login) ?></title>
     <style>
         body {
-            background-color: #0f0f0f;
-            color: white;
-            font-family: 'Roboto', sans-serif;
+            background-color: #050509;
+            color: #f9fafb;
+            font-family: var(--font-ui, system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif);
         }
         .profile-container {
-            border-radius: 50px;
-            max-width: 1200px;
-            margin: 60px auto;
-            padding: 20px;
+            max-width: 1120px;
+            margin: 56px auto 72px;
+            padding: 32px 32px 40px;
+            border-radius: 32px;
+            background: #0f0f0f;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.75),
+                0 0 0 1px rgba(0, 0, 0, 0.55);
         }
         .profile-header {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 24px;
+            margin-bottom: 28px;
         }
         .profile-avatar {
             width: 80px;
             height: 80px;
-            border-radius: 50%;
-            background-color: #333;
+            border-radius: 24px;
+            background: #2a2a2a;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 26px;
+            font-weight: 800;
+            font-family: var(--font-ui, system-ui, sans-serif);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            box-shadow:
+                0 12px 32px rgba(0, 0, 0, 0.55),
+                0 0 0 1px rgba(255, 255, 255, 0.08);
         }
         .profile-info h1 {
             margin: 0;
-            font-size: 28px;
+            font-size: 26px;
+            font-family: var(--font-ui, system-ui, sans-serif);
+            letter-spacing: 0.03em;
+            text-transform: none;
+        }
+        .profile-tagline {
+            margin-top: 6px;
+            font-size: 13px;
+            color: #9ca3af;
         }
         .profile-stats {
             display: flex;
-            gap: 20px;
-            margin-top: 10px;
-            color: #aaa;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .profile-stat-card {
+            min-width: 160px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.22);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #e5e7eb;
+        }
+        .profile-stat-label {
+            opacity: 0.75;
+        }
+        .profile-stat-value {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: #e5e7eb;
+            margin-left: 4px;
+        }
+        .profile-section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+        .profile-section-header h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .profile-section-meta {
+            font-size: 13px;
+            color: #9ca3af;
         }
         .game-grid {
-            margin-top: 20px;
+            margin-top: 8px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            gap: 18px;
         }
         .game-card {
-            background: #1d1d1d;
-            border-radius: 12px;
+            background: #141414;
+            border-radius: 16px;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.65);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
         }
         .game-card:hover {
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 28px 60px rgba(0, 0, 0, 0.75);
+            border-color: rgba(255, 255, 255, 0.16);
         }
         .game-img {
             width: 100%;
-            height: 120px;
+            height: 126px;
             object-fit: cover;
+            display: block;
         }
         .game-name {
-            padding: 10px;
+            padding: 10px 12px 12px;
             text-align: center;
             font-size: 14px;
+            font-weight: 500;
+            color: #e5e7eb;
+        }
+        .game-name span {
+            font-size: 11px;
+            display: block;
+            margin-top: 4px;
+            color: #6b7280;
         }
         .empty {
             text-align: center;
-            color: #888;
-            font-size: 18px;
-            margin: 50px 0;
+            color: #9ca3af;
+            font-size: 16px;
+            margin: 40px 0 8px;
+        }
+        .empty-sub {
+            text-align: center;
+            color: #6b7280;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -120,37 +195,50 @@
             <main class="profile-container">
                 <?php if ($purchased_ok): ?>
                     <p style="background:#14532d;color:#bbf7d0;padding:12px 16px;border-radius:12px;margin-bottom:20px;">
-                        Тестовая оплата прошла успешно — товар добавлен в библиотеку.
+                        Оплата прошла успешно — товар добавлен в библиотеку.
                     </p>
-                <?php endif; ?>
-                <?php if (isAdminSession()): ?>
-                    <p style="margin-bottom:16px;"><a href="admin_products.php" style="color:#a78bfa;">Управление каталогом (админ)</a></p>
                 <?php endif; ?>
                 <div class="profile-header">
                     <div class="profile-avatar"><?= strtoupper(substr($login, 0, 2)) ?></div>
                     <div class="profile-info">
                         <h1><?= htmlspecialchars($login) ?></h1>
+                        <div class="profile-tagline">Личная библиотека VR-приложений</div>
                         <div class="profile-stats">
-                            <span><?= $games_in_lib ?> игр в библиотеке</span>
-                            <span><?= $total_games > 0 ? round(($games_in_lib / $total_games) * 100) : 0 ?>% завершено</span>
+                            <div class="profile-stat-card">
+                                <span class="profile-stat-label">В библиотеке</span>
+                                <span class="profile-stat-value"><?= $games_in_lib ?></span>
+                            </div>
+                            <div class="profile-stat-card">
+                                <span class="profile-stat-label">Каталог закрыт на</span>
+                                <span class="profile-stat-value"><?= $total_games > 0 ? round(($games_in_lib / $total_games) * 100) : 0 ?>%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <h2>Моя библиотека</h2>
+                <div class="profile-section-header">
+                    <h2>Моя библиотека</h2>
+                    <div class="profile-section-meta">
+                        <?= $games_in_lib ?> из <?= $total_games ?> доступных приложений
+                    </div>
+                </div>
                 <?php if (empty($library)): ?>
                     <p class="empty">Вы ещё не добавили ни одного приложения.</p>
+                    <p class="empty-sub">Откройте главную страницу и нажмите «Добавить» или «Купить» на понравившихся проектах.</p>
                 <?php else: ?>
                     <div class="game-grid">
                         <?php foreach (array_reverse($library) as $game): ?>
                             <div class="game-card">
                                 <img src="../images/<?= htmlspecialchars($game['img']) ?>" alt="<?= htmlspecialchars($game['name']) ?>" class="game-img">
-                                <div class="game-name"><?= htmlspecialchars($game['name']) ?></div>
+                                <div class="game-name">
+                                    <?= htmlspecialchars($game['name']) ?>
+                                </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
             </main>
+            <?php $asset_prefix = '..'; include __DIR__ . '/../includes/footer.php'; ?>
         </div>
     </div>
     <script src="../scripts/script.js"></script>

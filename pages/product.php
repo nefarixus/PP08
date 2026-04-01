@@ -23,7 +23,7 @@ if (!$product) {
 }
 
 $price = (float) ($product['price'] ?? 0);
-$description = $product['description'] ?? '';
+$description = trim((string) ($product['description'] ?? ''));
 $in_library = false;
 if (isset($_SESSION['user_id'])) {
     $stmt = $pdo->prepare('SELECT id FROM user_products WHERE user_id = ? AND product_id = ?');
@@ -32,31 +32,16 @@ if (isset($_SESSION['user_id'])) {
 }
 
 $logged_in = isset($_SESSION['user_id']);
+$price_badge_class = 'pd-price-badge' . ($price > 0 ? '' : ' pd-price-badge--free');
 ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="../images/logo.svg" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/style.css">
     <title><?= htmlspecialchars($product['name']) ?> — СайдКвест</title>
-    <style>
-        .pd-wrap { max-width: 720px; margin: 40px auto; padding: 24px; color: #fff; }
-        .pd-hero { border-radius: 16px; overflow: hidden; margin-bottom: 24px; }
-        .pd-hero img { width: 100%; display: block; max-height: 320px; object-fit: cover; }
-        .pd-desc { color: #c4c4c4; line-height: 1.6; margin: 16px 0; }
-        .pd-price { font-size: 22px; color: #a78bfa; margin: 12px 0; }
-        .pd-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-        .pd-btn {
-            padding: 12px 24px; border-radius: 999px; border: none; cursor: pointer;
-            font-family: inherit; font-size: 15px; text-decoration: none; display: inline-block;
-        }
-        .pd-btn-primary { background: linear-gradient(90deg, #7c3aed, #db2777); color: #fff; }
-        .pd-btn-secondary { background: #333; color: #fff; }
-        .pd-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    </style>
 </head>
 <body>
     <div class="mobile-warning">
@@ -66,32 +51,42 @@ $logged_in = isset($_SESSION['user_id']);
     <div class="page-wrapper">
         <div class="container">
             <main class="pd-wrap">
-                <div class="pd-hero">
-                    <img src="../images/<?= htmlspecialchars($product['img']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
-                </div>
-                <h1><?= htmlspecialchars($product['name']) ?></h1>
-                <?php if ($price > 0): ?>
-                    <p class="pd-price"><?= number_format($price, 2, ',', ' ') ?> ₽</p>
-                <?php else: ?>
-                    <p class="pd-price">Бесплатно</p>
-                <?php endif; ?>
-                <?php if ($description !== ''): ?>
-                    <p class="pd-desc"><?= nl2br(htmlspecialchars($description)) ?></p>
-                <?php endif; ?>
+                <article class="pd-card">
+                    <div class="pd-hero">
+                        <img src="../images/<?= htmlspecialchars($product['img']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+                    </div>
+                    <div class="pd-divider"></div>
+                    <div class="pd-panel">
+                        <h1 class="pd-title"><?= htmlspecialchars($product['name']) ?></h1>
+                        <div class="pd-meta">
+                            <?php if ($price > 0): ?>
+                                <span class="<?= htmlspecialchars($price_badge_class) ?>"><?= number_format($price, 2, ',', ' ') ?> ₽</span>
+                            <?php else: ?>
+                                <span class="<?= htmlspecialchars($price_badge_class) ?>">Бесплатно</span>
+                            <?php endif; ?>
+                        </div>
+                        <?php if ($description !== ''): ?>
+                            <p class="pd-desc"><?= nl2br(htmlspecialchars($description)) ?></p>
+                        <?php else: ?>
+                            <p class="pd-desc pd-desc--empty">Описание скоро появится.</p>
+                        <?php endif; ?>
 
-                <div class="pd-actions">
-                    <a href="../index.php" class="pd-btn pd-btn-secondary">← К каталогу</a>
-                    <?php if (!$logged_in): ?>
-                        <a href="login.php" class="pd-btn pd-btn-primary">Войти, чтобы добавить или купить</a>
-                    <?php elseif ($in_library): ?>
-                        <button type="button" class="pd-btn pd-btn-secondary" disabled>Уже в библиотеке</button>
-                    <?php elseif ($price > 0): ?>
-                        <a href="checkout.php?product_id=<?= (int) $product['id'] ?>" class="pd-btn pd-btn-primary">Купить</a>
-                    <?php else: ?>
-                        <button type="button" class="pd-btn pd-btn-primary add-button" data-product-id="<?= (int) $product['id'] ?>">Добавить в библиотеку</button>
-                    <?php endif; ?>
-                </div>
+                        <div class="pd-actions">
+                            <a href="../index.php" class="pd-btn pd-btn-secondary">← К каталогу</a>
+                            <?php if (!$logged_in): ?>
+                                <a href="login.php" class="pd-btn pd-btn-primary">Войти, чтобы добавить или купить</a>
+                            <?php elseif ($in_library): ?>
+                                <button type="button" class="pd-btn pd-btn-secondary" disabled>Уже в библиотеке</button>
+                            <?php elseif ($price > 0): ?>
+                                <a href="checkout.php?product_id=<?= (int) $product['id'] ?>" class="pd-btn pd-btn-primary">Купить</a>
+                            <?php else: ?>
+                                <button type="button" class="pd-btn pd-btn-primary add-button" data-product-id="<?= (int) $product['id'] ?>">Добавить в библиотеку</button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </article>
             </main>
+            <?php $asset_prefix = '..'; include __DIR__ . '/../includes/footer.php'; ?>
         </div>
     </div>
     <script>window.SITE_ROOT = '../';</script>

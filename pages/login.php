@@ -119,28 +119,7 @@
                     </div>
                 </div>
             </div>
-            <footer>
-            <div class="left-footer-div">
-                <img src="../images/khronos.png" alt="khronos">
-                <ul>
-                    <li><a href="#">Настройки файлов cookie</a></li>
-                    <li><a href="#">Условия использования</a></li>
-                    <li><a href="#">Конфиденциальность</a></li>
-                    <li><a href="#">Присоединяйтесь к команде</a></li>
-                    <li><a href="#">Продвигайте с нами</a></li>
-                    <li><a href="#">Предложить приложение</a></li>
-                </ul>
-            </div>
-            <div class="right-footer-div">
-                <a href="#"><img src="../images/logo-facebook.png" alt=""></a>
-                <a href="#"><img src="../images/logo-instagram.png" alt=""></a>
-                <a href="#"><img src="../images/logo-reddit.png" alt=""></a>
-                <a href="#"><img src="../images/ri_twitter-x-line.png" alt=""></a>
-                <a href="#"><img src="../images/mdi_youtube.png" alt=""></a>
-                <a href="#"><img src="../images/logo-tiktok.png" alt=""></a>
-                <a href="#"><img src="../images/logo-linkedin.png" alt=""></a>
-            </div>
-        </footer>
+            <?php $asset_prefix = '..'; include __DIR__ . '/../includes/footer.php'; ?>
         </main>
     </div>
 
