@@ -19,7 +19,8 @@
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$user || $user['password'] !== $password) { // Пароль не хэширован
+    // Проверяем существование пользователя и верификацию хэшированного пароля
+    if (!$user || !password_verify($password, $user['password'])) {
         $_SESSION['error'] = "Неверный email или пароль";
         header('Location: ./pages/login.php');
         exit;

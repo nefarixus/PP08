@@ -26,9 +26,12 @@
         exit;
     }
 
-    // Вставляем пользователя (пароль без хэширования)
+    // Хэшируем пароль перед сохранением
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+    // Вставляем пользователя с хэшированным паролем
     $stmt = $pdo->prepare("INSERT INTO users (login, password, email) VALUES (?, ?, ?)");
-    $stmt->execute([$login, $password, $email]);
+    $stmt->execute([$login, $hashedPassword, $email]);
 
     // Сохраняем успех в сессии
     $_SESSION['registration_success'] = true;
