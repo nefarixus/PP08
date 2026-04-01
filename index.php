@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="icon" href="./images/logo.svg" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,12 +70,16 @@
         <div class="auth">
             <?php
             session_start();
+            $is_admin = (($_SESSION['role'] ?? null) === 'admin') || (($_SESSION['login'] ?? null) === 'admin');
             if (isset($_SESSION['user_id'])): ?>
                 <!-- Пользователь авторизован -->
                 <div class="auth-buttons">
                     <p class="login"><?= htmlspecialchars($_SESSION['login']) ?></p>
                     <a href="./pages/profile.php" class="account">Мой аккаунт</a>
-                    <a href="logout.php" class="account" style="color: #ff4444; border: 0;">Выход</a>
+                    <?php if ($is_admin): ?>
+                        <a href="./pages/admin_products.php" class="account account-admin">Админка</a>
+                    <?php endif; ?>
+                    <a href="logout.php" class="account account-logout" style="color: #ff4444; border: 0;">Выход</a>
                 </div>
             <?php else: ?>
                 <!-- Гость -->
@@ -95,7 +99,7 @@
                 <div class="header">
                     <div class="main-header">
                         <div class="slider">
-                            <div class="slide" style="background-image: url('./images/LandscapeArcGlyphCoverArt.jpg');">
+                            <div class="slide" style="background-image: url('./images/LandscapeArcGlyphCoverArt.jpg'); filter: brightness(1.12) contrast(1.04) saturate(1.08);">
                                 <a href="#">
                                     <div class="banner-card">
                                         <p class="card-title">ArcGlyph</p>
@@ -104,7 +108,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="slide" style="background-image: url('./images/app-image-override.png');">
+                            <div class="slide" style="background-image: url('./images/app-image-override.png'); filter: brightness(1.12) contrast(1.04) saturate(1.08);">
                                 <a href="#">
                                     <div class="banner-card">
                                         <p class="card-title">FortiCasa</p>
@@ -113,7 +117,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="slide" style="background-image: url('./images/app-image-override (1).png');">
+                            <div class="slide" style="background-image: url('./images/app-image-override (1).png'); filter: brightness(1.12) contrast(1.04) saturate(1.08);">
                                 <a href="#">
                                     <div class="banner-card">
                                         <p class="card-title">Metacity Patrol</p>
@@ -123,9 +127,9 @@
                                 </a>
                             </div>
                         </div>
-                        <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-                        <button class="next" onclick="moveSlide(1)">&#10095;</button>
                     </div>
+                    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+                    <button class="next" onclick="moveSlide(1)">&#10095;</button>
                     <div class="dots">
                         <span class="dot" onclick="currentSlide(0)"></span>
                         <span class="dot" onclick="currentSlide(1)"></span>
@@ -164,6 +168,23 @@
                                     foreach ($products as $product) {
                                         $is_in_library = in_array($product['id'], $user_library);
                                         $price = (float) ($product['price'] ?? 0);
+                                        $raw_desc = trim((string) ($product['description'] ?? ''));
+                                        if ($raw_desc !== '') {
+                                            $excerpt = function_exists('mb_substr')
+                                                ? mb_substr($raw_desc, 0, 100)
+                                                : substr($raw_desc, 0, 100);
+                                            $long = function_exists('mb_strlen')
+                                                ? mb_strlen($raw_desc) > 100
+                                                : strlen($raw_desc) > 100;
+                                            if ($long) {
+                                                $excerpt .= '…';
+                                            }
+                                            $excerpt_html = '<p class="catalog-card__excerpt">' . htmlspecialchars($excerpt) . '</p>';
+                                        } else {
+                                            $excerpt_html = '<p class="catalog-card__excerpt catalog-card__excerpt--placeholder">Описание появится в карточке товара</p>';
+                                        }
+
+                                        $price_pill_class = 'catalog-card__price-pill' . ($price > 0 ? '' : ' catalog-card__price-pill--free');
                                         $price_label = $price > 0
                                             ? number_format($price, 0, '', ' ') . ' ₽'
                                             : 'Бесплатно';
@@ -179,15 +200,24 @@
 
                                         echo '
                                         <div class="slide2">
-                                            <a href="pages/product.php?id=' . (int) $product['id'] . '">
-                                                <div class="banner-card2">
-                                                    <img src="./images/' . htmlspecialchars($product['img']) . '" alt="banner card" class="card-image">
-                                                    <p class="card-desc2">' . htmlspecialchars($product['name']) . '</p>
-                                                    <p class="card-price-tag">' . htmlspecialchars($price_label) . '</p>
-                                                    <div class="rating"></div>
+                                            <article class="catalog-card">
+                                                <a href="pages/product.php?id=' . (int) $product['id'] . '" class="catalog-card__link">
+                                                    <div class="catalog-card__media">
+                                                        <img src="./images/' . htmlspecialchars($product['img']) . '" alt="' . htmlspecialchars($product['name']) . '">
+                                                    </div>
+                                                    <div class="catalog-card__divider"></div>
+                                                    <div class="catalog-card__body">
+                                                        <h3 class="catalog-card__title">' . htmlspecialchars($product['name']) . '</h3>
+                                                        <div class="catalog-card__price-row">
+                                                            <span class="' . $price_pill_class . '">' . htmlspecialchars($price_label) . '</span>
+                                                        </div>
+                                                        ' . $excerpt_html . '
+                                                    </div>
+                                                </a>
+                                                <div class="catalog-card__footer">
+                                                    ' . $action_html . '
                                                 </div>
-                                            </a>
-                                            ' . $action_html . '
+                                            </article>
                                         </div>';
                                     }
                                 }
@@ -385,7 +415,7 @@
                             <a href="#" class="slide5">
                                 <div class="tops-card-inside5">
                                     <div class="block">
-                                        <p class="top-card-title5"><span>Все приложения</span></p>
+                                        <p class="top-card-title5"><span>Все приложения конец</span></p>
                                     </div>
                                     <img src="https://cdn.sidequestvr.com/file/2480138/all.png-220.png" alt="3rd top">
                                 </div>
@@ -395,32 +425,27 @@
                         <button class="next5">&#10095;</button>
                     </div>
                 </div>
-                <footer>
-                <div class="left-footer-div">
-                    <img src="./images/khronos.png" alt="khronos">
-                    <ul>
-                        <li><a href="#">Настройки файлов cookie</a></li>
-                        <li><a href="#">Условия использования</a></li>
-                        <li><a href="#">Конфиденциальность</a></li>
-                        <li><a href="#">Присоединяйтесь к команде</a></li>
-                        <li><a href="#">Продвигайте с нами</a></li>
-                        <li><a href="#">Предложить приложение</a></li>
-                    </ul>
-                </div>
-                <div class="right-footer-div">
-                    <a href="#"><img src="./images/logo-facebook.png" alt=""></a>
-                    <a href="#"><img src="./images/logo-instagram.png" alt=""></a>
-                    <a href="#"><img src="./images/logo-reddit.png" alt=""></a>
-                    <a href="#"><img src="./images/ri_twitter-x-line.png" alt=""></a>
-                    <a href="#"><img src="./images/mdi_youtube.png" alt=""></a>
-                    <a href="#"><img src="./images/logo-tiktok.png" alt=""></a>
-                    <a href="#"><img src="./images/logo-linkedin.png" alt=""></a>
-                </div>
-
-            </footer>
+                <?php $asset_prefix = '.'; include __DIR__ . '/includes/footer.php'; ?>
             </main>
         </div>
     </div>
+
+    <?php if (isset($_SESSION['user_id'])): ?>
+        <div class="notif-float notif-wrap" aria-label="notifications-float">
+            <button type="button" class="notif-btn notif-btn--float" aria-label="Уведомления" title="Уведомления">
+                <span class="notif-btn__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7"></path>
+                        <path d="M13.73 21a2 2 0 01-3.46 0"></path>
+                    </svg>
+                </span>
+            </button>
+            <div class="notif-menu notif-menu--float" hidden>
+                <div class="notif-menu__title">Уведомления</div>
+                <div class="notif-menu__list" data-empty="Покупок ещё нет."></div>
+            </div>
+        </div>
+    <?php endif; ?>
     
     <div class="overlay"></div>
     <script src="./scripts/script.js"></script>

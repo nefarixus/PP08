@@ -108,40 +108,70 @@ document.querySelector('.next4')?.addEventListener('click', () => moveSlide4(1))
 showSlide4(0);
 
 // === Слайдер 5: Прокрутка по 3 карточки из 4 видимых
-let slideIndex5 = 0;
-
 const slider5 = document.querySelector('.last-container-slider');
 const slides5 = document.querySelectorAll('.slide5');
-
-const totalSlides5 = slides5.length;
 const slidesPerView5 = 4;     // Отображаем 4 карточки
-const slidesToScroll = 1;     // Прокручиваем по 3 за раз
-const totalPages5 = Math.ceil((totalSlides5 - slidesPerView5 + slidesToScroll) / slidesToScroll);
+const slidesToScroll = 3;     // На сколько карточек листаем
+let currentTranslate5 = 0;    // текущий сдвиг в px
 
 // Устанавливаем ширину каждой карточки
 slides5.forEach(slide => {
   slide.style.maxWidth = `${100 / slidesPerView5}%`; // 25% на карточку
 });
 
-function showSlide5(pageIndex) {
-  const maxPage = totalPages5 - 1;
-  slideIndex5 = Math.max(0, Math.min(pageIndex, maxPage));
+const prev5Btn = document.querySelector('.prev5');
+const next5Btn = document.querySelector('.next5');
 
-  // Сдвигаем на количество прокручиваемых карточек × ширину одной
-  const offset = slideIndex5 * slidesToScroll * (100 / slidesPerView5);
-  slider5.style.transform = `translateX(-${offset}%)`;
+function getMaxTranslate5() {
+  if (!slider5?.parentElement) return 0;
+  return Math.max(0, slider5.scrollWidth - slider5.parentElement.clientWidth);
+}
+
+function getStepPx5() {
+  if (!slides5.length) return 0;
+  const first = slides5[0];
+  return Math.max(1, Math.round(first.getBoundingClientRect().width * slidesToScroll));
+}
+
+function renderSlider5() {
+  if (!slider5) return;
+  const maxTranslate = getMaxTranslate5();
+  currentTranslate5 = Math.max(0, Math.min(currentTranslate5, maxTranslate));
+  slider5.style.transform = `translateX(-${currentTranslate5}px)`;
+}
+
+function updateSlider5Buttons() {
+  if (!prev5Btn || !next5Btn) return;
+  const maxTranslate = getMaxTranslate5();
+  prev5Btn.disabled = currentTranslate5 <= 0;
+  next5Btn.disabled = currentTranslate5 >= maxTranslate;
+  prev5Btn.style.opacity = prev5Btn.disabled ? '0.45' : '1';
+  next5Btn.style.opacity = next5Btn.disabled ? '0.45' : '1';
+  prev5Btn.style.cursor = prev5Btn.disabled ? 'not-allowed' : 'pointer';
+  next5Btn.style.cursor = next5Btn.disabled ? 'not-allowed' : 'pointer';
+}
+
+function showSlide5(nextTranslate) {
+  currentTranslate5 = nextTranslate;
+  renderSlider5();
+  updateSlider5Buttons();
 }
 
 function moveSlide5(direction) {
-  showSlide5(slideIndex5 + direction);
+  const step = getStepPx5();
+  showSlide5(currentTranslate5 + direction * step);
 }
 
 // Подключаем кнопки
-document.querySelector('.prev5')?.addEventListener('click', () => moveSlide5(-1));
-document.querySelector('.next5')?.addEventListener('click', () => moveSlide5(1));
+prev5Btn?.addEventListener('click', () => moveSlide5(-1));
+next5Btn?.addEventListener('click', () => moveSlide5(1));
 
 // Инициализация
 showSlide5(0);
+window.addEventListener('resize', () => {
+  renderSlider5();
+  updateSlider5Buttons();
+});
 
 
 // 🔴 Глобальная функция для совместимости с HTML первого слайдера
@@ -197,4 +227,59 @@ document.querySelectorAll('.add-button').forEach(button => {
             alert('Ошибка при добавлении');
         }
     });
+});
+
+// === Уведомления (колокольчик) ===
+function formatRuDateTime(isoLike) {
+  const d = new Date(isoLike);
+  if (Number.isNaN(d.getTime())) return String(isoLike || '');
+  return d.toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+async function loadNotifications(listEl) {
+  const root = (typeof window.SITE_ROOT !== 'undefined' ? window.SITE_ROOT : '');
+  const r = await fetch(root + 'get_notifications.php', { credentials: 'same-origin' });
+  const j = await r.json();
+  const items = Array.isArray(j.items) ? j.items : [];
+  listEl.innerHTML = '';
+  if (items.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'notif-item';
+    empty.innerHTML = `<div class="notif-item__name">${listEl.dataset.empty || 'Пока пусто'}</div>`;
+    listEl.appendChild(empty);
+    return;
+  }
+  for (const it of items) {
+    const div = document.createElement('div');
+    div.className = 'notif-item';
+    div.innerHTML = `
+      <div class="notif-item__name">${(it.name || '').replace(/</g, '&lt;')}</div>
+      <div class="notif-item__sub">Добавлено в библиотеку</div>
+      <div class="notif-item__time">${formatRuDateTime(it.added_at)}</div>
+    `;
+    listEl.appendChild(div);
+  }
+}
+
+document.querySelectorAll('.notif-btn').forEach(btn => {
+  const wrap = btn.closest('.notif-wrap') || btn.closest('.auth-buttons');
+  const menu = wrap?.querySelector('.notif-menu');
+  const list = wrap?.querySelector('.notif-menu__list');
+  if (!menu || !list) return;
+
+  btn.addEventListener('click', async () => {
+    const willOpen = menu.hasAttribute('hidden');
+    // close other menus
+    document.querySelectorAll('.notif-menu').forEach(m => m.setAttribute('hidden', ''));
+    if (willOpen) {
+      menu.removeAttribute('hidden');
+      try { await loadNotifications(list); } catch (e) { /* ignore */ }
+    }
+  });
+});
+
+document.addEventListener('click', (e) => {
+  const t = e.target;
+  if (t && (t.closest?.('.notif-menu') || t.closest?.('.notif-btn'))) return;
+  document.querySelectorAll('.notif-menu').forEach(m => m.setAttribute('hidden', ''));
 });

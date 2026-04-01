@@ -44,29 +44,16 @@ if ($stmt->fetch()) {
 
 $err = $_SESSION['error'] ?? '';
 unset($_SESSION['error']);
+$desc = trim((string) ($product['description'] ?? ''));
 ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="icon" href="../images/logo.svg" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/style.css">
     <title>Оформление — <?= htmlspecialchars($product['name']) ?></title>
-    <style>
-        .checkout-wrap { max-width: 520px; margin: 48px auto; padding: 24px; color: #fff; }
-        .checkout-card { background: #1d1d1d; border-radius: 16px; padding: 24px; }
-        .checkout-card img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 16px; }
-        .checkout-price { font-size: 22px; margin: 12px 0; color: #a78bfa; }
-        .checkout-btn {
-            display: inline-block; margin-top: 20px; padding: 14px 28px;
-            background: linear-gradient(90deg, #7c3aed, #db2777); color: #fff;
-            border: none; border-radius: 999px; font-size: 16px; cursor: pointer; font-family: inherit;
-        }
-        .checkout-btn:hover { opacity: 0.92; }
-        .checkout-err { color: #f87171; margin-bottom: 12px; }
-    </style>
 </head>
 <body>
     <div class="mobile-warning">
@@ -75,23 +62,34 @@ unset($_SESSION['error']);
     <?php include __DIR__ . '/../aside.php'; ?>
     <div class="page-wrapper">
         <div class="container">
-            <main class="checkout-wrap">
-                <h1>Оформление</h1>
+            <main class="checkout-page">
+                <h1 class="checkout-page-title">Оформление</h1>
                 <?php if ($err): ?>
                     <p class="checkout-err"><?= htmlspecialchars($err) ?></p>
                 <?php endif; ?>
                 <div class="checkout-card">
-                    <img src="../images/<?= htmlspecialchars($product['img']) ?>" alt="">
-                    <h2><?= htmlspecialchars($product['name']) ?></h2>
-                    <p class="checkout-price"><?= number_format($price, 2, ',', ' ') ?> ₽</p>
-                    <p style="color:#aaa;font-size:14px;">Далее откроется тестовая оплата (без реальных денег).</p>
-                    <form action="../create_order.php" method="post">
-                        <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
-                        <button type="submit" class="checkout-btn">Перейти к оплате</button>
-                    </form>
+                    <div class="checkout-card__media">
+                        <img src="../images/<?= htmlspecialchars($product['img']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+                    </div>
+                    <div class="checkout-card__divider"></div>
+                    <div class="checkout-card__body">
+                        <h2 class="checkout-card__title"><?= htmlspecialchars($product['name']) ?></h2>
+                        <?php if ($desc !== ''): ?>
+                            <p class="checkout-card__desc"><?= nl2br(htmlspecialchars($desc)) ?></p>
+                        <?php endif; ?>
+                        <div class="checkout-card__row">
+                            <span class="checkout-price-badge"><?= number_format($price, 2, ',', ' ') ?> ₽</span>
+                        </div>
+                        <p class="checkout-hint">После нажатия кнопки вы перейдёте на страницу оплаты.</p>
+                        <form action="../create_order.php" method="post">
+                            <input type="hidden" name="product_id" value="<?= (int) $product['id'] ?>">
+                            <button type="submit" class="checkout-btn">Перейти к оплате</button>
+                        </form>
+                    </div>
                 </div>
-                <p style="margin-top:20px;"><a href="product.php?id=<?= (int) $product['id'] ?>" style="color:#a78bfa;">← Назад к карточке</a></p>
+                <p class="checkout-back"><a href="product.php?id=<?= (int) $product['id'] ?>">← Назад к карточке</a></p>
             </main>
+            <?php $asset_prefix = '..'; include __DIR__ . '/../includes/footer.php'; ?>
         </div>
     </div>
     <script src="../scripts/script.js"></script>
