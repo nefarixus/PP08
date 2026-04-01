@@ -6,23 +6,26 @@
         exit;
     }
 
-    $host = '127.0.0.1';
-    $dbname = 'sidequest';
-    $username = 'root';
-    $password_db = '';
-
-    try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password_db);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die("Ошибка подключения: " . $e->getMessage());
-    }
+    require_once __DIR__ . '/includes/db.php';
+    $pdo = getPDO();
 
     $user_id = $_SESSION['user_id'];
     $product_id = filter_input(INPUT_POST, 'product_id', FILTER_VALIDATE_INT);
 
     if (!$product_id) {
         die("Неверный ID продукта");
+    }
+
+    $stmt = $pdo->prepare('SELECT price FROM products WHERE id = ?');
+    $stmt->execute([$product_id]);
+    $prod = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$prod) {
+        die("Товар не найден");
+    }
+    if ((float) ($prod['price'] ?? 0) > 0) {
+        $_SESSION['error'] = 'Платные приложения добавляются после покупки.';
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? 'index.php'));
+        exit;
     }
 
     // Проверяем, есть ли уже в библиотеке

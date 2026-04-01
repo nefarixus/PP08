@@ -137,16 +137,10 @@
                         <div class="main-second-header">
                             <div class="slider2">
                                 <?php
-                                // Подключение к БД
-                                $host = '127.0.0.1';
-                                $dbname = 'sidequest';
-                                $username = 'root';
-                                $password_db = '';
-
+                                require_once __DIR__ . '/includes/db.php';
                                 try {
-                                    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password_db);
-                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                } catch (PDOException $e) {
+                                    $pdo = getPDO();
+                                } catch (Throwable $e) {
                                     echo '<div class="slide2"><p>Ошибка подключения к БД</p></div>';
                                     exit;
                                 }
@@ -161,7 +155,6 @@
                                     $user_library = $stmt->fetchAll(PDO::FETCH_COLUMN); // массив ID: [1, 5, 7]
                                 }
 
-                                // Получаем все приложения
                                 $stmt = $pdo->query("SELECT * FROM products ORDER BY id");
                                 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -170,22 +163,31 @@
                                 } else {
                                     foreach ($products as $product) {
                                         $is_in_library = in_array($product['id'], $user_library);
+                                        $price = (float) ($product['price'] ?? 0);
+                                        $price_label = $price > 0
+                                            ? number_format($price, 0, '', ' ') . ' ₽'
+                                            : 'Бесплатно';
+
+                                        $action_html = '';
+                                        if ($is_in_library) {
+                                            $action_html = '<button type="button" class="add-button" disabled>Уже в библиотеке</button>';
+                                        } elseif ($price > 0) {
+                                            $action_html = '<a class="checkout-link" href="pages/checkout.php?product_id=' . (int) $product['id'] . '">Купить</a>';
+                                        } else {
+                                            $action_html = '<button type="button" class="add-button" data-product-id="' . (int) $product['id'] . '">Добавить</button>';
+                                        }
 
                                         echo '
                                         <div class="slide2">
-                                            <a href="#">
+                                            <a href="pages/product.php?id=' . (int) $product['id'] . '">
                                                 <div class="banner-card2">
                                                     <img src="./images/' . htmlspecialchars($product['img']) . '" alt="banner card" class="card-image">
                                                     <p class="card-desc2">' . htmlspecialchars($product['name']) . '</p>
+                                                    <p class="card-price-tag">' . htmlspecialchars($price_label) . '</p>
                                                     <div class="rating"></div>
                                                 </div>
                                             </a>
-                                            <button type="button" 
-                                                    class="add-button" 
-                                                    data-product-id="' . $product['id'] . '"
-                                                    ' . ($is_in_library ? 'disabled' : '') . '>
-                                                ' . ($is_in_library ? 'Уже в библиотеке' : 'Добавить') . '
-                                            </button>
+                                            ' . $action_html . '
                                         </div>';
                                     }
                                 }

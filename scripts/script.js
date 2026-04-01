@@ -169,10 +169,12 @@ overlay?.addEventListener('click', () => {
   document.body.style.overflow = '';
 });
 
+const addToLibraryUrl = (typeof window.SITE_ROOT !== 'undefined' ? window.SITE_ROOT : '') + 'add_to_library_ajax.php';
+
 document.querySelectorAll('.add-button').forEach(button => {
     button.addEventListener('click', async function() {
         const productId = this.dataset.productId;
-        const response = await fetch('add_to_library_ajax.php', {
+        const response = await fetch(addToLibraryUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'product_id=' + productId

@@ -1514,10 +1514,40 @@ input[type="password"]:focus {
 }
 
 .add-button:hover {
-    box-shadow: 
+    box-shadow:
         0 0 15px rgba(255, 0, 255, 0.9),
         0 0 30px rgba(255, 0, 255, 0.7),
         inset 0 0 15px rgba(255, 0, 255, 0.9);
+}
+
+a.checkout-link {
+    margin-top: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid white;
+    padding: 15px 30px;
+    border-radius: 50px;
+    transition: all 1s ease-in-out;
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    font-size: inherit;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+a.checkout-link:hover {
+    box-shadow:
+        0 0 15px rgba(255, 0, 255, 0.9),
+        0 0 30px rgba(255, 0, 255, 0.7),
+        inset 0 0 15px rgba(255, 0, 255, 0.9);
+}
+
+.card-price-tag {
+    color: #c4b5fd;
+    font-size: 13px;
+    margin-top: 6px;
 }
 
 .mobile-warning {

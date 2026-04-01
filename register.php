@@ -1,18 +1,8 @@
 <?php
     session_start();
 
-    // Подключение к базе данных
-    $host = '127.0.0.1';
-    $dbname = 'sidequest';
-    $username = 'root';
-    $password_db = '';
-
-    try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password_db);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die("Ошибка подключения: " . $e->getMessage());
-    }
+    require_once __DIR__ . '/includes/db.php';
+    $pdo = getPDO();
 
     // Получаем данные из формы
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);

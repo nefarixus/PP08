@@ -5,17 +5,8 @@
         exit;
     }
 
-    $host = '127.0.0.1';
-    $dbname = 'sidequest';
-    $username = 'root';
-    $password_db = '';
-
-    try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password_db);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die("Ошибка подключения: " . $e->getMessage());
-    }
+    require_once __DIR__ . '/../includes/db.php';
+    $pdo = getPDO();
 
     $user_id = $_SESSION['user_id'];
     $login = $_SESSION['login'];
@@ -35,6 +26,7 @@
     $total_games = $stmt_all->fetch()['total'];
 
     $games_in_lib = count($library);
+    $purchased_ok = isset($_GET['paid']) && $_GET['paid'] === '1';
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -126,13 +118,21 @@
     <div class="page-wrapper">
         <div class="container">
             <main class="profile-container">
+                <?php if ($purchased_ok): ?>
+                    <p style="background:#14532d;color:#bbf7d0;padding:12px 16px;border-radius:12px;margin-bottom:20px;">
+                        Тестовая оплата прошла успешно — товар добавлен в библиотеку.
+                    </p>
+                <?php endif; ?>
+                <?php if (isAdminSession()): ?>
+                    <p style="margin-bottom:16px;"><a href="admin_products.php" style="color:#a78bfa;">Управление каталогом (админ)</a></p>
+                <?php endif; ?>
                 <div class="profile-header">
                     <div class="profile-avatar"><?= strtoupper(substr($login, 0, 2)) ?></div>
                     <div class="profile-info">
                         <h1><?= htmlspecialchars($login) ?></h1>
                         <div class="profile-stats">
                             <span><?= $games_in_lib ?> игр в библиотеке</span>
-                            <span><?= round(($games_in_lib / $total_games) * 100) ?>% завершено</span>
+                            <span><?= $total_games > 0 ? round(($games_in_lib / $total_games) * 100) : 0 ?>% завершено</span>
                         </div>
                     </div>
                 </div>

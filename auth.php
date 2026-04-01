@@ -1,18 +1,8 @@
 <?php
     session_start();
 
-    // Подключение к БД
-    $host = '127.0.0.1';
-    $dbname = 'sidequest';
-    $username = 'root';
-    $password_db = ''; // Укажи свой пароль, если есть
-
-    try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password_db);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die("Ошибка подключения: " . $e->getMessage());
-    }
+    require_once __DIR__ . '/includes/db.php';
+    $pdo = getPDO();
 
     // Получаем данные
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -40,7 +30,15 @@
     $_SESSION['login'] = $user['login'];
     $_SESSION['email'] = $user['email'];
 
-    // Перенаправляем на главную
+    if (!empty($_SESSION['redirect_after_login'])) {
+        $r = $_SESSION['redirect_after_login'];
+        unset($_SESSION['redirect_after_login']);
+        if (preg_match('#^pages/[a-z0-9_]+\.php#i', $r)) {
+            header('Location: ' . $r);
+            exit;
+        }
+    }
+
     header('Location: index.php');
     exit;
 ?>

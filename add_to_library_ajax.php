@@ -7,15 +7,10 @@
         exit;
     }
 
-    $host = '127.0.0.1';
-    $dbname = 'sidequest';
-    $username = 'root';
-    $password_db = '';
-
+    require_once __DIR__ . '/includes/db.php';
     try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password_db);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
+        $pdo = getPDO();
+    } catch (Throwable $e) {
         echo json_encode(['error' => 'Ошибка БД']);
         exit;
     }
@@ -25,6 +20,18 @@
 
     if (!$product_id) {
         echo json_encode(['error' => 'Неверный ID']);
+        exit;
+    }
+
+    $stmt = $pdo->prepare('SELECT price FROM products WHERE id = ?');
+    $stmt->execute([$product_id]);
+    $prod = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (!$prod) {
+        echo json_encode(['error' => 'Товар не найден']);
+        exit;
+    }
+    if ((float) ($prod['price'] ?? 0) > 0) {
+        echo json_encode(['error' => 'Сначала оформите покупку']);
         exit;
     }
 
