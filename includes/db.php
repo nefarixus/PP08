@@ -26,5 +26,6 @@ function getPDO(): PDO
 
 function isAdminSession(): bool
 {
-    return isset($_SESSION['login']) && $_SESSION['login'] === 'admin';
+    // Проверяем роль пользователя, сохраненную в сессии при входе
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
 }

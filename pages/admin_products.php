@@ -13,7 +13,7 @@ require_once __DIR__ . '/../includes/db.php';
 
 if (!isAdminSession()) {
     http_response_code(403);
-    die('Доступ только для администратора (логин admin).');
+    die('Доступ только для администратора.');
 }
 
 $pdo = getPDO();

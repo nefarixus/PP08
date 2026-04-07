@@ -30,6 +30,8 @@
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['login'] = $user['login'];
     $_SESSION['email'] = $user['email'];
+    // Сохраняем роль пользователя для последующей проверки прав доступа
+    $_SESSION['role'] = $user['role'] ?? 'user';
 
     if (!empty($_SESSION['redirect_after_login'])) {
         $r = $_SESSION['redirect_after_login'];
