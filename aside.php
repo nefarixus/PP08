@@ -55,7 +55,7 @@
     <div class="auth">
         <?php
         session_start();
-        $is_admin = (($_SESSION['role'] ?? null) === 'admin') || (($_SESSION['login'] ?? null) === 'admin');
+        $is_admin = (($_SESSION['role'] ?? null) === 'admin');
         if (isset($_SESSION['user_id'])): ?>
             <!-- Пользователь авторизован -->
             <div class="auth-buttons">
