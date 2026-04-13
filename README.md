@@ -1,4 +1,4 @@
-SQL: [sidequest.sql](https://github.com/user-attachments/files/26663223/sidequest.sql)
+SQL: [sidequest.sql](https://github.com/user-attachments/files/26663226/sidequest.sql)
 -- phpMyAdmin SQL Dump
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
