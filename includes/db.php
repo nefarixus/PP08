@@ -12,7 +12,7 @@ function getPDO(): PDO
     $host = '127.0.0.1';
     $dbname = 'sidequest';
     $username = 'root';
-    $password_db = '';
+    $password_db = '12345';
 
     $pdo = new PDO(
         "mysql:host=$host;dbname=$dbname;charset=utf8mb4",

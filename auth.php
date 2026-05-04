@@ -1,6 +1,7 @@
 <?php
     session_start();
 
+    // Подключение к базе данных
     require_once __DIR__ . '/includes/db.php';
     $pdo = getPDO();
 
