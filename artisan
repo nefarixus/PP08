@@ -1,0 +1,53 @@
+#!/usr/bin/env php
+<?php
+
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Facade;
+
+define('LARAVEL_START', microtime(true));
+
+/*
+|--------------------------------------------------------------------------
+| Check If The Application Is Installed
+|--------------------------------------------------------------------------
+|
+| If the application is not installed, we will exit with a helpful message
+| that explains the next steps to get the application up and running for
+| the very first time.
+|
+*/
+
+if (! file_exists($applicationPath = __DIR__.'/bootstrap/app.php')) {
+    echo 'Application bootstrap file not found. Please run "composer install" first.'.PHP_EOL;
+
+    exit(1);
+}
+
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader for
+| this application. We just need to utilize it! We'll simply require it
+| into the script here so we don't need to manually load our classes.
+|
+*/
+
+require $applicationPath;
+
+/*
+|--------------------------------------------------------------------------
+| Run The Artisan Application
+|--------------------------------------------------------------------------
+|
+| When we run the console application, the current CLI command will be
+| executed in this console and the response sent back to a terminal
+| or another output device for the developers. Here goes nothing!
+|
+*/
+
+$app->make(Kernel::class)->handle(
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+);
