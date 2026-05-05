@@ -418,9 +418,11 @@ const fetchProducts = async () => {
     console.error('Failed to fetch products:', e);
   } finally {
     loading.value = false;
-    // After DOM updates with new products, reset catalog slider position
+    // После рендера слайдов — ставим minWidth явно (как PHP JS) и сбрасываем позицию
     await nextTick();
     if (catalogSlider.value) {
+      (catalogSlider.value.querySelectorAll('.slide2') as NodeListOf<HTMLElement>)
+        .forEach(slide => { slide.style.minWidth = `${100 / SLIDES_PER_VIEW_2}%`; });
       catalogPageIndex = 0;
       catalogSlider.value.style.transform = 'translateX(0%)';
     }
@@ -475,13 +477,21 @@ const addToLibrary = async (productId: number) => {
 
 // ===================== Mount =====================
 onMounted(() => {
-  // Init hero
-  showHeroSlide(0);
+  // Init hero — устанавливаем фон сразу, без fade-анимации при первой загрузке
+  nextTick(() => {
+    heroSlideIndex.value = 0;
+    if (heroHeader.value) heroHeader.value.style.backgroundImage = `url('${heroImages[0]}')`;
+    if (heroSlider.value) heroSlider.value.style.transform = 'translateX(0%)';
+  });
 
-  // Init tops slider (static, no async)
+  // Init tops slider — явно ставим minWidth как в PHP JS
   nextTick(() => {
     topsPageIndex = 0;
-    if (topsSlider.value) topsSlider.value.style.transform = 'translateX(0%)';
+    if (topsSlider.value) {
+      (topsSlider.value.querySelectorAll('.slide4') as NodeListOf<HTMLElement>)
+        .forEach(slide => { slide.style.minWidth = `${100 / SLIDES_PER_VIEW_4}%`; });
+      topsSlider.value.style.transform = 'translateX(0%)';
+    }
   });
 
   // Init last slider (static, no async)
