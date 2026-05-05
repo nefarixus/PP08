@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
-import { apiPost } from '../utils/api';
+import { apiPost, apiGet } from '../utils/api';
 
 const route = useRoute();
 const productId = Number(route.params.id);
@@ -66,7 +66,7 @@ const addingToLibrary = ref(false);
 
 const fetchProduct = async () => {
   try {
-    const response = await fetch(`/api/products/${productId}`);
+    const response = await apiGet(`/api/products/${productId}`);
     if (response.ok) {
       product.value = await response.json();
     }
@@ -79,7 +79,7 @@ const fetchProduct = async () => {
 
 const fetchUserLibrary = async () => {
   try {
-    const response = await fetch('/api/user/library', { credentials: 'include' });
+    const response = await apiGet('/api/user/library');
     if (response.ok) {
       const libraryData = await response.json();
       userLibrary.value = libraryData.map((item: any) => item.id);

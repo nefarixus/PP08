@@ -288,7 +288,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
-import { apiPost } from '../utils/api';
+import { apiPost, apiGet } from '../utils/api';
 
 // ===================== Data =====================
 const products = ref<any[]>([]);
@@ -412,7 +412,7 @@ const initSlider5 = () => {
 // ===================== Products / Library =====================
 const fetchProducts = async () => {
   try {
-    const response = await fetch('/api/products');
+    const response = await apiGet('/api/products');
     if (response.ok) products.value = await response.json();
   } catch (e) {
     console.error('Failed to fetch products:', e);
@@ -429,7 +429,7 @@ const fetchProducts = async () => {
 
 const fetchUserLibrary = async () => {
   try {
-    const response = await fetch('/api/user/library', { credentials: 'include' });
+    const response = await apiGet('/api/user/library');
     if (response.ok) {
       const data = await response.json();
       userLibrary.value = data.map((item: any) => item.id);

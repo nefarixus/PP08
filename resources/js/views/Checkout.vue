@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
-import { apiPost } from '../utils/api';
+import { apiPost, apiGet } from '../utils/api';
 
 const route = useRoute();
 const router = useRouter();
@@ -69,7 +69,7 @@ const error = ref('');
 
 const fetchProduct = async () => {
   try {
-    const response = await fetch(`/api/products/${productId}`);
+    const response = await apiGet(`/api/products/${productId}`);
     if (response.ok) {
       product.value = await response.json();
     }
@@ -80,7 +80,7 @@ const fetchProduct = async () => {
 
 const checkAuth = async () => {
   try {
-    const response = await fetch('/api/user', { credentials: 'include' });
+    const response = await apiGet('/api/user');
     isLoggedIn.value = response.ok;
   } catch {
     isLoggedIn.value = false;

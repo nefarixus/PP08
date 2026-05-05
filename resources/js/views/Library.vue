@@ -46,6 +46,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
+import { apiGet } from '../utils/api';
 
 const library = ref<any[]>([]);
 const loading = ref(true);
@@ -60,7 +61,7 @@ const userInitial = computed(() => {
 
 const fetchUserLibrary = async () => {
   try {
-    const userResponse = await fetch('/api/user', { credentials: 'include' });
+    const userResponse = await apiGet('/api/user');
     if (!userResponse.ok) {
       isLoggedIn.value = false;
       return;
@@ -70,7 +71,7 @@ const fetchUserLibrary = async () => {
     userLogin.value = userData.login || '';
     userEmail.value = userData.email || '';
 
-    const libraryResponse = await fetch('/api/user/library', { credentials: 'include' });
+    const libraryResponse = await apiGet('/api/user/library');
     if (libraryResponse.ok) {
       library.value = await libraryResponse.json();
     }
