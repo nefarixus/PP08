@@ -82,7 +82,7 @@ const register = async () => {
     }
   } catch (err) {
     console.error('Registration error:', err);
-    error.value = 'Произошла ошибка при регистрации.';
+    error.value = 'Произошла ошибка при регистрации. Пожалуйста, попробуйте еще раз.';
   } finally {
     loading.value = false;
   }

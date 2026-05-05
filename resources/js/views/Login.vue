@@ -87,7 +87,7 @@ const login = async () => {
     }
   } catch (err) {
     console.error('Login error:', err);
-    error.value = 'Произошла ошибка при входе.';
+    error.value = 'Произошла ошибка при входе. Пожалуйста, попробуйте еще раз.';
   } finally {
     loading.value = false;
   }

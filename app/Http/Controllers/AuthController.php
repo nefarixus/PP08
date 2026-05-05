@@ -21,14 +21,17 @@ class AuthController extends Controller
         $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'login';
 
         if (!Auth::attempt([$field => $login, 'password' => $data['password']], true)) {
+            \Log::error('Auth attempt failed for login: ' . $login . ' field: ' . $field);
             return response()->json([
                 'message' => 'Неверный логин или пароль'
             ], 422);
         }
 
-        $request->session()->regenerate();
+        $user = Auth::user();
+        \Log::info('User authenticated: ID ' . $user->id . ', Login: ' . $user->login);
 
-        $user = $request->user();
+        // Regenerate session for security
+        $request->session()->regenerate();
 
         return response()->json([
             'message' => 'OK',
@@ -37,7 +40,7 @@ class AuthController extends Controller
                 'login' => $user->login,
                 'email' => $user->email,
                 'role' => $user->role,
-            ],
+            ]
         ]);
     }
 
@@ -55,7 +58,9 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
             'role' => 'user',
         ]);
+        \Log::info('User registered: ID ' . $user->id . ', Login: ' . $user->login);
 
+        // Log the user in after registration
         Auth::login($user);
         $request->session()->regenerate();
 
@@ -66,7 +71,7 @@ class AuthController extends Controller
                 'login' => $user->login,
                 'email' => $user->email,
                 'role' => $user->role,
-            ],
+            ]
         ], 201);
     }
 }

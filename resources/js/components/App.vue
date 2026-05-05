@@ -119,10 +119,16 @@ const checkAuth = async () => {
       userLogin.value = userData.login;
       userRole.value = userData.role;
       isAdmin.value = userData.role === 'admin';
+    } else if (response.status === 401) {
+      // User is not authenticated, which is normal for unauthenticated users
+      isLoggedIn.value = false;
     } else {
+      // Other error occurred
+      console.error('Auth check failed with status:', response.status);
       isLoggedIn.value = false;
     }
   } catch (error) {
+    console.error('Auth check failed:', error);
     isLoggedIn.value = false;
   }
 };
@@ -137,6 +143,12 @@ const logout = async () => {
     router.push('/login');
   } catch (error) {
     console.error('Logout failed:', error);
+    // Even if logout fails, clear local state
+    isLoggedIn.value = false;
+    userLogin.value = '';
+    userRole.value = '';
+    isAdmin.value = false;
+    router.push('/login');
   }
 };
 
