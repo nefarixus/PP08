@@ -73,7 +73,7 @@ const login = async () => {
 
   try {
     const response = await apiPost('/api/login', {
-      email: email.value,
+      login: email.value,
       password: password.value,
     });
 

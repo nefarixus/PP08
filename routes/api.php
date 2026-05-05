@@ -1,33 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\CheckoutController;
 
-/*
-|--------------------------------------------------------------------------
-| Public routes — no session needed
-|--------------------------------------------------------------------------
-*/
-Route::get('/products',      [App\Http\Controllers\ProductController::class, 'index']);
-Route::get('/products/{id}', [App\Http\Controllers\ProductController::class, 'show']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
-/*
-|--------------------------------------------------------------------------
-| Session-aware routes (Sanctum SPA cookie auth)
-|--------------------------------------------------------------------------
-*/
-Route::middleware([EnsureFrontendRequestsAreStateful::class])->group(function () {
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
 
-    // Auth (needs session to set cookie)
-    Route::post('/register', [App\Http\Controllers\AuthController::class, 'register']);
-    Route::post('/login',    [App\Http\Controllers\AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [UserController::class, 'show']);
+    Route::post('/logout', [UserController::class, 'logout']);
 
-    // Protected routes
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/logout',      [App\Http\Controllers\UserController::class,   'logout']);
-        Route::get('/user',         [App\Http\Controllers\UserController::class,   'show']);
-        Route::get('/user/library', [App\Http\Controllers\LibraryController::class, 'index']);
-        Route::post('/library',     [App\Http\Controllers\LibraryController::class, 'store']);
-        Route::post('/checkout',    [App\Http\Controllers\CheckoutController::class, 'checkout']);
-    });
+    Route::get('/user/library', [LibraryController::class, 'index']);
+    Route::post('/library', [LibraryController::class, 'store']);
+
+    Route::post('/checkout', [CheckoutController::class, 'checkout']);
 });

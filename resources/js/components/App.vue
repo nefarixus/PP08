@@ -59,12 +59,9 @@
           <RouterLink v-if="isAdmin" to="/admin" class="account account-admin">Админка</RouterLink>
           <a href="#" @click.prevent="logout" class="account account-logout" style="color: #ff4444; border: 0;">Выход</a>
         </div>
-        <template v-else>
-          <a href="#"><img src="/images/profile.svg" alt="account picture" class="auth-img"></a>
-          <div class="auth-buttons">
-            <RouterLink to="/login" class="login">Войти или <br> Зарегестрироваться</RouterLink>
-          </div>
-        </template>
+        <div v-else class="auth-buttons">
+          <RouterLink to="/login" class="login">Войти или <br> Зарегестрироваться</RouterLink>
+        </div>
       </div>
     </aside>
     <div class="page-wrapper">
