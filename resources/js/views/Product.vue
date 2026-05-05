@@ -1,7 +1,8 @@
 <template>
-  <div v-if="loading" class="pd-wrap text-center">Загрузка...</div>
-  <div v-else-if="product" class="pd-wrap">
-    <article class="pd-card">
+  <main class="pd-wrap">
+    <div v-if="loading" style="text-align:center; padding: 48px 0; color:#aaa;">Загрузка...</div>
+
+    <article v-else-if="product" class="pd-card">
       <div class="pd-hero">
         <img :src="`/images/${product.img}`" :alt="product.name">
       </div>
@@ -15,42 +16,47 @@
         <p v-else class="pd-desc pd-desc--empty">Описание скоро появится.</p>
 
         <div class="pd-actions">
-          <RouterLink to="/" class="add-button">← К каталогу</RouterLink>
-          <div v-if="!isLoggedIn">
-            <RouterLink to="/login" class="add-button">Войти, чтобы добавить или купить</RouterLink>
-          </div>
-          <div v-else-if="isInLibrary">
-            <button type="button" class="add-button" disabled>Уже в библиотеке</button>
-          </div>
-          <div v-else-if="product.price > 0">
-            <RouterLink :to="`/checkout/${product.id}`" class="checkout-link">Купить</RouterLink>
-          </div>
-          <div v-else>
-            <button 
-              type="button" 
-              class="add-button"
-              @click="addToLibrary"
-              :disabled="addingToLibrary"
-            >
-              {{ addingToLibrary ? 'Добавление...' : 'Добавить в библиотеку' }}
-            </button>
-          </div>
+          <RouterLink to="/" class="pd-btn pd-btn-secondary">← К каталогу</RouterLink>
+
+          <RouterLink v-if="!isLoggedIn" to="/login" class="pd-btn pd-btn-primary">
+            Войти, чтобы добавить или купить
+          </RouterLink>
+
+          <button v-else-if="isInLibrary" type="button" class="pd-btn pd-btn-secondary" disabled>
+            Уже в библиотеке
+          </button>
+
+          <RouterLink v-else-if="product.price > 0" :to="`/checkout/${product.id}`" class="pd-btn pd-btn-primary">
+            Купить
+          </RouterLink>
+
+          <button
+            v-else
+            type="button"
+            class="pd-btn pd-btn-primary add-button"
+            :data-product-id="product.id"
+            @click="addToLibrary"
+            :disabled="addingToLibrary"
+          >
+            {{ addingToLibrary ? 'Добавление...' : 'Добавить в библиотеку' }}
+          </button>
         </div>
       </div>
     </article>
-  </div>
-  <div v-else class="pd-wrap text-center">
-    <p>Продукт не найден.</p>
-    <RouterLink to="/" class="add-button mt-3">← К каталогу</RouterLink>
-  </div>
+
+    <div v-else style="text-align:center; padding:48px 0; color:#aaa;">
+      <p>Продукт не найден.</p>
+      <RouterLink to="/" class="pd-btn pd-btn-secondary" style="margin-top:16px;">← К каталогу</RouterLink>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useRoute, useRouter, RouterLink } from 'vue-router';
+import { useRoute, RouterLink } from 'vue-router';
+import { apiPost } from '../utils/api';
 
 const route = useRoute();
-const router = useRouter();
 const productId = Number(route.params.id);
 const product = ref<any>(null);
 const loading = ref(true);
@@ -63,8 +69,6 @@ const fetchProduct = async () => {
     const response = await fetch(`/api/products/${productId}`);
     if (response.ok) {
       product.value = await response.json();
-    } else {
-      console.error('Failed to fetch product:', await response.text());
     }
   } catch (error) {
     console.error('Failed to fetch product:', error);
@@ -75,30 +79,24 @@ const fetchProduct = async () => {
 
 const fetchUserLibrary = async () => {
   try {
-    const response = await fetch('/api/user/library', {
-      credentials: 'include'
-    });
+    const response = await fetch('/api/user/library', { credentials: 'include' });
     if (response.ok) {
       const libraryData = await response.json();
       userLibrary.value = libraryData.map((item: any) => item.id);
       isLoggedIn.value = true;
     } else if (response.status === 401) {
-      // Not authenticated, that's fine
       isLoggedIn.value = false;
     }
-  } catch (error) {
-    console.error('Failed to fetch user library:', error);
+  } catch {
     isLoggedIn.value = false;
   }
 };
 
-const isInLibrary = computed(() => {
-  return userLibrary.value.includes(productId);
-});
+const isInLibrary = computed(() => userLibrary.value.includes(productId));
 
 const priceDisplay = computed(() => {
   if (!product.value) return '';
-  return product.value.price > 0 
+  return product.value.price > 0
     ? `${new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(product.value.price)} ₽`
     : 'Бесплатно';
 });
@@ -112,23 +110,14 @@ const addToLibrary = async () => {
 
   addingToLibrary.value = true;
   try {
-    const response = await fetch('/api/library', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ product_id: productId })
-    });
-
+    const response = await apiPost('/api/library', { product_id: productId });
     if (response.ok) {
-      // Add to local library state
       userLibrary.value.push(productId);
-      // Optionally show a notification
     } else {
       const errorData = await response.json();
       alert(`Ошибка: ${errorData.message || 'Не удалось добавить в библиотеку'}`);
     }
-  } catch (error) {
-    console.error('Failed to add to library:', error);
+  } catch {
     alert('Произошла ошибка при добавлении в библиотеку.');
   } finally {
     addingToLibrary.value = false;
@@ -142,5 +131,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* All styles are now handled by the global style.css */
+/* All styles are handled by global style.css */
 </style>

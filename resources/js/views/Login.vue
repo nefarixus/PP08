@@ -1,14 +1,14 @@
 <template>
   <div class="main-login">
     <div class="login-container">
-      <h2>Вход в аккаунт</h2>
-      
+      <h2>Войдите сейчас, чтобы исследовать мир VR!</h2>
+
       <form @submit.prevent="login">
-        <div v-if="registered" class="text-center mb-4 p-3 bg-green-900/30 border border-green-500/30 rounded text-green-300">
-          <p>Регистрация прошла успешно! Войдите в свой новый аккаунт.</p>
+        <div v-if="registered" class="login-success">
+          Регистрация прошла успешно! Войдите в свой новый аккаунт.
         </div>
 
-        <div v-if="error" class="text-center mb-4 p-3 bg-red-900/30 border border-red-500/30 rounded text-red-300">{{ error }}</div>
+        <div v-if="error" class="login-error">{{ error }}</div>
 
         <div class="form-group">
           <label for="email">Email</label>
@@ -26,25 +26,24 @@
           <button type="submit" class="btn-login" :disabled="loading">
             {{ loading ? 'Вход...' : 'Войти' }}
           </button>
+          <div class="social-icons">
+            <a href="#" class="social-btn">
+              <img src="/images/ic_baseline-discord.png" alt="Discord">
+            </a>
+            <a href="#" class="social-btn">
+              <img src="/images/mdi_github.png" alt="GitHub">
+            </a>
+            <a href="#" class="social-btn">
+              <img src="/images/flowbite_google-solid.png" alt="Google">
+            </a>
+          </div>
         </div>
       </form>
 
-      <div class="social-icons">
-        <a href="#" class="social-btn">
-          <img src="/images/social-discord.png" alt="Discord">
-        </a>
-        <a href="#" class="social-btn">
-          <img src="/images/social-twitter.png" alt="Twitter">
-        </a>
-        <a href="#" class="social-btn">
-          <img src="/images/social-youtube.png" alt="YouTube">
-        </a>
+      <div class="login-footer">
+        <p>Нет аккаунта?</p>
+        <RouterLink to="/register">Создайте здесь!</RouterLink>
       </div>
-    </div>
-    
-    <div class="login-footer">
-      <span>Нет аккаунта?</span>
-      <RouterLink to="/register" class="add-button">Зарегестрироваться</RouterLink>
     </div>
   </div>
 </template>
@@ -52,6 +51,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute, RouterLink } from 'vue-router';
+import { apiPost } from '../utils/api';
 
 const router = useRouter();
 const route = useRoute();
@@ -62,7 +62,6 @@ const loading = ref(false);
 const registered = ref(false);
 
 onMounted(() => {
-  // Check if redirected from registration
   if (route.query.registered === '1') {
     registered.value = true;
   }
@@ -73,17 +72,14 @@ const login = async () => {
   loading.value = true;
 
   try {
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ email: email.value, password: password.value })
+    const response = await apiPost('/api/login', {
+      email: email.value,
+      password: password.value,
     });
 
     const data = await response.json();
 
     if (response.ok) {
-      // Authentication successful, redirect to home or intended page
       const redirectTo = (route.query.redirect as string) || '/';
       router.push(redirectTo);
     } else {
@@ -99,5 +95,24 @@ const login = async () => {
 </script>
 
 <style scoped>
-/* All styles are now handled by the global style.css */
+.login-success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 6px;
+  color: #86efac;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}
+.login-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  color: #fca5a5;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  text-align: center;
+}
 </style>

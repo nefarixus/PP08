@@ -55,7 +55,7 @@
       <div class="auth">
         <div v-if="isLoggedIn" class="auth-buttons">
           <p class="login">{{ userLogin }}</p>
-          <RouterLink to="/profile" class="account">Мой аккаунт</RouterLink>
+          <RouterLink to="/library" class="account">Мой аккаунт</RouterLink>
           <RouterLink v-if="isAdmin" to="/admin" class="account account-admin">Админка</RouterLink>
           <a href="#" @click.prevent="logout" class="account account-logout" style="color: #ff4444; border: 0;">Выход</a>
         </div>
@@ -67,6 +67,28 @@
     <div class="page-wrapper">
       <div class="container" id="main-container">
         <router-view />
+        <footer class="site-footer">
+          <div class="site-footer__left">
+            <img src="/images/khronos.png" alt="khronos" class="site-footer__logo">
+            <nav class="site-footer__links" aria-label="footer">
+              <a href="#" class="site-footer__link">Настройки cookie</a>
+              <a href="#" class="site-footer__link">Условия</a>
+              <a href="#" class="site-footer__link">Конфиденциальность</a>
+              <a href="#" class="site-footer__link">Команда</a>
+              <a href="#" class="site-footer__link">Продвижение</a>
+              <a href="#" class="site-footer__link">Предложить приложение</a>
+            </nav>
+          </div>
+          <div class="site-footer__right" aria-label="social">
+            <a href="#" class="site-footer__social"><img src="/images/logo-facebook.png" alt=""></a>
+            <a href="#" class="site-footer__social"><img src="/images/logo-instagram.png" alt=""></a>
+            <a href="#" class="site-footer__social"><img src="/images/logo-reddit.png" alt=""></a>
+            <a href="#" class="site-footer__social"><img src="/images/ri_twitter-x-line.png" alt=""></a>
+            <a href="#" class="site-footer__social"><img src="/images/mdi_youtube.png" alt=""></a>
+            <a href="#" class="site-footer__social"><img src="/images/logo-tiktok.png" alt=""></a>
+            <a href="#" class="site-footer__social"><img src="/images/logo-linkedin.png" alt=""></a>
+          </div>
+        </footer>
       </div>
     </div>
     <div class="mobile-warning">
@@ -79,6 +101,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
+import { apiPost } from '../utils/api';
 
 const router = useRouter();
 const searchQuery = ref('');
@@ -89,9 +112,7 @@ const isAdmin = ref(false);
 
 const checkAuth = async () => {
   try {
-    const response = await fetch('/api/user', {
-      credentials: 'include'
-    });
+    const response = await fetch('/api/user', { credentials: 'include' });
     if (response.ok) {
       const userData = await response.json();
       isLoggedIn.value = true;
@@ -102,17 +123,13 @@ const checkAuth = async () => {
       isLoggedIn.value = false;
     }
   } catch (error) {
-    console.error('Auth check failed:', error);
     isLoggedIn.value = false;
   }
 };
 
 const logout = async () => {
   try {
-    await fetch('/api/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
+    await apiPost('/api/logout');
     isLoggedIn.value = false;
     userLogin.value = '';
     userRole.value = '';
@@ -125,7 +142,6 @@ const logout = async () => {
 
 const search = () => {
   if (searchQuery.value.trim()) {
-    // Implement search functionality
     console.log('Search query:', searchQuery.value);
   }
 };

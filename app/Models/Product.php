@@ -9,11 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    public $timestamps = false;
+
     protected $fillable = [
         'name',
         'img',
@@ -21,20 +18,12 @@ class Product extends Model
         'price',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'price' => 'decimal:2',
     ];
 
-    /**
-     * Get the users who own this product.
-     */
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_products');
+        return $this->belongsToMany(User::class, 'user_products', 'product_id', 'user_id');
     }
 }

@@ -1,50 +1,50 @@
 <template>
-  <div v-if="loading" class="pd-wrap text-center">Загрузка...</div>
-  <div v-else-if="!isLoggedIn" class="pd-wrap text-center">
-    <p>Пожалуйста, <RouterLink to="/login" class="nav-text">войдите</RouterLink>, чтобы просмотреть свою библиотеку.</p>
-  </div>
-  <div v-else class="pd-wrap">
-    <header class="lib-header mb-6">
-      <h1 class="pd-title">Моя библиотека</h1>
-      <div class="lib-user-info text-right">
-        <span class="lib-user-name">{{ userLogin }}</span>
-        <span class="lib-user-email">{{ userEmail }}</span>
-      </div>
-    </header>
+  <div v-if="loading" class="profile-container text-center" style="padding: 60px 0;">Загрузка...</div>
 
-    <p v-if="library.length === 0" class="text-center py-8 text-gray-400">Ваша библиотека пуста. Перейдите в <RouterLink to="/" class="nav-text">каталог</RouterLink>, чтобы добавить игры.</p>
-    <div v-else class="catalog-grid">
-      <div
+  <div v-else-if="!isLoggedIn" class="profile-container text-center" style="padding: 60px 0;">
+    <p>Пожалуйста, <RouterLink to="/login" class="nav-text">войдите</RouterLink>, чтобы просмотреть профиль.</p>
+  </div>
+
+  <div v-else class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">{{ userInitial }}</div>
+      <div class="profile-info">
+        <h1 class="profile-name">{{ userLogin }}</h1>
+        <p class="profile-email">{{ userEmail }}</p>
+      </div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <span class="profile-stat__value">{{ library.length }}</span>
+        <span class="profile-stat__label">Игр в библиотеке</span>
+      </div>
+    </div>
+
+    <h2 class="profile-section-title">Моя библиотека</h2>
+
+    <p v-if="library.length === 0" class="profile-empty">
+      Ваша библиотека пуста. Перейдите в <RouterLink to="/" class="nav-text">каталог</RouterLink>, чтобы добавить игры.
+    </p>
+
+    <div v-else class="game-grid">
+      <RouterLink
         v-for="game in library"
         :key="game.id"
-        class="catalog-card"
+        :to="`/product/${game.id}`"
+        class="game-card"
       >
-        <RouterLink :to="`/product/${game.id}`" class="catalog-card__link">
-          <div class="catalog-card__media">
-            <img :src="`/images/${game.img}`" :alt="game.name">
-          </div>
-          <div class="catalog-card__divider"></div>
-          <div class="catalog-card__body">
-            <h3 class="catalog-card__title">{{ game.name }}</h3>
-            <div class="catalog-card__price-row">
-              <span v-if="game.price > 0" class="catalog-card__price-pill">{{ formatPrice(game.price) }} ₽</span>
-              <span v-else class="catalog-card__price-pill catalog-card__price-pill--free">Бесплатно</span>
-            </div>
-            <p v-if="game.description" class="catalog-card__excerpt">
-              {{ getExcerpt(game.description) }}
-            </p>
-            <p v-else class="catalog-card__excerpt catalog-card__excerpt--placeholder">
-              Описание появится в карточке товара
-            </p>
-          </div>
-        </RouterLink>
-      </div>
+        <div class="game-img">
+          <img :src="`/images/${game.img}`" :alt="game.name">
+        </div>
+        <p class="game-name">{{ game.name }}</p>
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 
 const library = ref<any[]>([]);
@@ -53,23 +53,24 @@ const isLoggedIn = ref(false);
 const userLogin = ref('');
 const userEmail = ref('');
 
+const userInitial = computed(() => {
+  const name = userLogin.value || userEmail.value;
+  return name ? name.charAt(0).toUpperCase() : '?';
+});
+
 const fetchUserLibrary = async () => {
   try {
-    const userResponse = await fetch('/api/user', {
-      credentials: 'include'
-    });
+    const userResponse = await fetch('/api/user', { credentials: 'include' });
     if (!userResponse.ok) {
       isLoggedIn.value = false;
       return;
     }
     const userData = await userResponse.json();
     isLoggedIn.value = true;
-    userLogin.value = userData.login;
-    userEmail.value = userData.email;
+    userLogin.value = userData.login || '';
+    userEmail.value = userData.email || '';
 
-    const libraryResponse = await fetch('/api/user/library', {
-      credentials: 'include'
-    });
+    const libraryResponse = await fetch('/api/user/library', { credentials: 'include' });
     if (libraryResponse.ok) {
       library.value = await libraryResponse.json();
     }
@@ -81,40 +82,150 @@ const fetchUserLibrary = async () => {
   }
 };
 
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('ru-RU', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(price);
-};
-
-const getExcerpt = (description: string) => {
-  if (!description) return '';
-  const excerpt = description.length > 100 ? description.substring(0, 100) + '…' : description;
-  return excerpt;
-};
-
 onMounted(() => {
   fetchUserLibrary();
 });
 </script>
 
 <style scoped>
-/* All styles are now handled by the global style.css */
-.lib-header {
+.profile-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+  color: #fff;
+}
+
+.profile-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
 }
-.lib-user-info {
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.35);
+  border: 2px solid rgba(124, 58, 237, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: #e9d5ff;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fafafa;
+}
+
+.profile-email {
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
 }
-.lib-user-name {
-  font-weight: bold;
+
+.profile-stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 36px;
+  padding: 20px 24px;
+  background: #1b1b1b;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-stat__value {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #c4b5fd;
+  line-height: 1;
+}
+
+.profile-stat__label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.profile-section-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fafafa;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.profile-empty {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 18px;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1b1b1b;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4);
+}
+
+.game-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.game-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
-.lib-user-email {
-  color: var(--muted);
+
+.game-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: #fafafa;
+  padding: 0 12px 12px;
+  margin: 0;
+  line-height: 1.3;
 }
 </style>

@@ -2885,3 +2885,34 @@ input[type="text"]:focus {
 .p-3 { padding: 24px; }
 .p-4 { padding: 32px; }
 .p-5 { padding: 40px; }
+
+/* ========== Вспомогательные классы для структуры ========== */
+
+.second-header {
+    width: 100%;
+}
+
+.main-second-header {
+    position: relative;
+    width: 100%;
+}
+
+/* Hero slide "Узнать больше" */
+.find-out-more {
+    display: inline-block;
+    color: white;
+    border: 1px solid white;
+    border-radius: 50px;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-ui);
+    transition: box-shadow 0.2s ease;
+}
+
+.find-out-more:hover {
+    box-shadow:
+        0 0 12px rgba(255, 0, 255, 0.8),
+        0 0 24px rgba(255, 0, 255, 0.5),
+        inset 0 0 10px rgba(255, 0, 255, 0.7);
+}

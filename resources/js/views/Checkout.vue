@@ -1,61 +1,70 @@
 <template>
-  <div class="checkout-page">
-    <h1 class="checkout-page-title">Оформление заказа</h1>
-    
-    <div v-if="loading" class="text-center py-8">Загрузка...</div>
-    <div v-else-if="product" class="checkout-card">
-      <div class="checkout-card__media">
-        <img :src="`/images/${product.img}`" :alt="product.name">
-      </div>
-      <div class="checkout-card__divider"></div>
-      <div class="checkout-card__body">
-        <h2 class="checkout-card__title">{{ product.name }}</h2>
-        <p v-if="product.description" class="checkout-card__desc">{{ product.description }}</p>
-        <p v-else class="checkout-card__desc">Описание скоро появится.</p>
-        
-        <div class="checkout-card__row">
-          <span>Цена:</span>
-          <span class="checkout-price-badge">
-            {{ formatPrice(product.price) }} ₽
-          </span>
+  <main class="checkout-page">
+    <h1 class="checkout-page-title">Оформление</h1>
+
+    <div v-if="loading" style="text-align:center; padding: 32px 0; color:#aaa;">Загрузка...</div>
+
+    <div v-else-if="!isLoggedIn" style="text-align:center; padding: 32px 0; color:#aaa;">
+      <p>Для оформления заказа необходимо <RouterLink to="/login" class="nav-text">войти</RouterLink>.</p>
+    </div>
+
+    <template v-else-if="product">
+      <p v-if="error" class="checkout-err">{{ error }}</p>
+      <p v-if="paid" class="checkout-err" style="color:#86efac;">{{ paidMessage }}</p>
+
+      <div class="checkout-card">
+        <div class="checkout-card__media">
+          <img :src="`/images/${product.img}`" :alt="product.name">
         </div>
-        
-        <p class="checkout-hint">
-          Это тестовый платеж. Настоящие деньги не будут списаны.
-        </p>
-        
-        <div v-if="error" class="checkout-err">{{ error }}</div>
-        
-        <button 
-          class="checkout-btn"
-          @click="completePayment"
-          :disabled="processing"
-        >
-          {{ processing ? 'Обработка...' : 'Купить' }}
-        </button>
-        
-        <p class="checkout-back">
-          <RouterLink to="/" class="nav-text">← Вернуться в каталог</RouterLink>
-        </p>
+        <div class="checkout-card__divider"></div>
+        <div class="checkout-card__body">
+          <h2 class="checkout-card__title">{{ product.name }}</h2>
+          <p v-if="product.description" class="checkout-card__desc">{{ product.description }}</p>
+          <p v-else class="checkout-card__desc">Описание скоро появится.</p>
+
+          <div class="checkout-card__row">
+            <span>Итого:</span>
+            <span class="checkout-price-badge">{{ formatPrice(product.price) }} ₽</span>
+          </div>
+
+          <p class="checkout-hint">Это тестовый платёж. Настоящие деньги не будут списаны.</p>
+
+          <button
+            v-if="!paid"
+            type="button"
+            class="checkout-btn"
+            @click="completePayment"
+            :disabled="processing"
+          >{{ processing ? 'Обработка...' : 'Купить' }}</button>
+        </div>
       </div>
-    </div>
-    <div v-else class="text-center py-8">
+
+      <p class="checkout-back">
+        <RouterLink :to="`/product/${product.id}`">← Назад к карточке</RouterLink>
+      </p>
+    </template>
+
+    <div v-else style="text-align:center; padding: 32px 0; color:#aaa;">
       <p>Продукт не найден.</p>
-      <RouterLink to="/" class="add-button mt-3">← Вернуться в каталог</RouterLink>
+      <RouterLink to="/" class="pd-btn pd-btn-secondary" style="margin-top:16px;">← К каталогу</RouterLink>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
+import { apiPost } from '../utils/api';
 
 const route = useRoute();
 const router = useRouter();
 const productId = Number(route.params.id);
 const product = ref<any>(null);
 const loading = ref(true);
+const isLoggedIn = ref(false);
 const processing = ref(false);
+const paid = ref(false);
+const paidMessage = ref('');
 const error = ref('');
 
 const fetchProduct = async () => {
@@ -64,47 +73,53 @@ const fetchProduct = async () => {
     if (response.ok) {
       product.value = await response.json();
     }
-  } catch (error) {
-    console.error('Failed to fetch product:', error);
-  } finally {
-    loading.value = false;
+  } catch (err) {
+    console.error('Failed to fetch product:', err);
   }
 };
 
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('ru-RU', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  }).format(price);
+const checkAuth = async () => {
+  try {
+    const response = await fetch('/api/user', { credentials: 'include' });
+    isLoggedIn.value = response.ok;
+  } catch {
+    isLoggedIn.value = false;
+  }
 };
+
+const formatPrice = (price: number) =>
+  new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(price);
 
 const completePayment = async () => {
   if (!product.value || product.value.price <= 0) return;
-  
+
   processing.value = true;
   error.value = '';
-  
+
   try {
-    // In a real app, this would be an actual payment API call
-    // For now, we'll simulate a successful payment
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Redirect to success page or library
-    alert('Покупка успешно завершена! Игра добавлена в вашу библиотеку.');
-    router.push('/library');
+    const response = await apiPost('/api/checkout', { product_id: productId });
+    const data = await response.json();
+
+    if (response.ok) {
+      paid.value = true;
+      paidMessage.value = data.message || 'Покупка успешно завершена! Игра добавлена в библиотеку.';
+      setTimeout(() => router.push('/library'), 2000);
+    } else {
+      error.value = data.message || 'Ошибка при обработке платежа.';
+    }
   } catch (err) {
-    console.error('Payment failed:', err);
     error.value = 'Произошла ошибка при обработке платежа.';
   } finally {
     processing.value = false;
   }
 };
 
-onMounted(() => {
-  fetchProduct();
+onMounted(async () => {
+  await Promise.all([fetchProduct(), checkAuth()]);
+  loading.value = false;
 });
 </script>
 
 <style scoped>
-/* All styles are now handled by the global style.css */
+/* All styles are handled by global style.css */
 </style>

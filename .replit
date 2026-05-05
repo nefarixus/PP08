@@ -4,3 +4,10 @@ channel = "stable-25_05"
 
 [agent]
 expertMode = true
+
+[userenv]
+
+[userenv.shared]
+SESSION_DRIVER = "file"
+SESSION_ENCRYPT = "false"
+SESSION_LIFETIME = "120"
