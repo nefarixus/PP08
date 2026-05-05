@@ -1,28 +1,50 @@
 <template>
-  <div class="auth-wrap">
-    <div class="auth-card">
-      <h1 class="auth-title">Вход в аккаунт</h1>
-
-      <div v-if="registered" class="auth-success">
-        <p>Регистрация прошла успешно! Войдите в свой новый аккаунт.</p>
-      </div>
-
-      <div v-if="error" class="auth-error">{{ error }}</div>
-
+  <div class="main-login">
+    <div class="login-container">
+      <h2>Вход в аккаунт</h2>
+      
       <form @submit.prevent="login">
-        <label for="email">Email</label>
-        <input v-model="email" type="email" id="email" name="email" required>
+        <div v-if="registered" class="text-center mb-4 p-3 bg-green-900/30 border border-green-500/30 rounded text-green-300">
+          <p>Регистрация прошла успешно! Войдите в свой новый аккаунт.</p>
+        </div>
 
-        <label for="password">Пароль</label>
-        <input v-model="password" type="password" id="password" name="password" required>
+        <div v-if="error" class="text-center mb-4 p-3 bg-red-900/30 border border-red-500/30 rounded text-red-300">{{ error }}</div>
 
-        <button type="submit" class="pd-btn pd-btn-primary" :disabled="loading">
-          {{ loading ? 'Вход...' : 'Войти' }}
-        </button>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input v-model="email" type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <input v-model="password" type="password" id="password" name="password" required>
+        </div>
+
+        <a href="#" class="forgot-password">Забыли пароль?</a>
+
+        <div class="btn-group">
+          <button type="submit" class="btn-login" :disabled="loading">
+            {{ loading ? 'Вход...' : 'Войти' }}
+          </button>
+        </div>
       </form>
-      <p class="auth-switch">
-        Нет аккаунта? <RouterLink to="/register">Зарегистрироваться</RouterLink>
-      </p>
+
+      <div class="social-icons">
+        <a href="#" class="social-btn">
+          <img src="/images/social-discord.png" alt="Discord">
+        </a>
+        <a href="#" class="social-btn">
+          <img src="/images/social-twitter.png" alt="Twitter">
+        </a>
+        <a href="#" class="social-btn">
+          <img src="/images/social-youtube.png" alt="YouTube">
+        </a>
+      </div>
+    </div>
+    
+    <div class="login-footer">
+      <span>Нет аккаунта?</span>
+      <RouterLink to="/register" class="add-button">Зарегестрироваться</RouterLink>
     </div>
   </div>
 </template>
@@ -77,6 +99,5 @@ const login = async () => {
 </script>
 
 <style scoped>
-/* Styles will be adapted from the original style.css */
-.auth-wrap { /* ... */ }
+/* All styles are now handled by the global style.css */
 </style>

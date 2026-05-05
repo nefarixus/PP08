@@ -1,31 +1,51 @@
 <template>
-  <div class="auth-wrap">
-    <div class="auth-card">
-      <h1 class="auth-title">Регистрация</h1>
-
-      <div v-if="success" class="auth-success">
+  <div class="main-login">
+    <div class="login-container">
+      <h2>Регистрация</h2>
+      
+      <div v-if="success" class="text-center mb-4 p-3 bg-green-900/30 border border-green-500/30 rounded text-green-300">
         <p>Вы успешно зарегистрировались!</p>
         <p>Ваш email: <strong>{{ registeredEmail }}</strong></p>
-        <p><RouterLink to="/login?registered=1">Войдите в аккаунт</RouterLink></p>
+        <p><RouterLink to="/login?registered=1" class="nav-text">Войдите в аккаунт</RouterLink></p>
       </div>
       <div v-else>
-        <div v-if="error" class="auth-error">{{ error }}</div>
+        <div v-if="error" class="text-center mb-4 p-3 bg-red-900/30 border border-red-500/30 rounded text-red-300">{{ error }}</div>
 
         <form @submit.prevent="register">
-          <label for="email">Email</label>
-          <input v-model="email" type="email" id="email" name="email" required>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input v-model="email" type="email" id="email" name="email" required>
+          </div>
 
-          <label for="password">Пароль</label>
-          <input v-model="password" type="password" id="password" name="password" required minlength="6">
+          <div class="form-group">
+            <label for="password">Пароль</label>
+            <input v-model="password" type="password" id="password" name="password" required minlength="6">
+          </div>
 
-          <button type="submit" class="pd-btn pd-btn-primary" :disabled="loading">
-            {{ loading ? 'Регистрация...' : 'Зарегистрироваться' }}
-          </button>
+          <div class="btn-group">
+            <button type="submit" class="btn-login" :disabled="loading">
+              {{ loading ? 'Регистрация...' : 'Зарегистрироваться' }}
+            </button>
+          </div>
         </form>
-        <p class="auth-switch">
-          Уже есть аккаунт? <RouterLink to="/login">Войти</RouterLink>
-        </p>
       </div>
+
+      <div class="social-icons">
+        <a href="#" class="social-btn">
+          <img src="/images/social-discord.png" alt="Discord">
+        </a>
+        <a href="#" class="social-btn">
+          <img src="/images/social-twitter.png" alt="Twitter">
+        </a>
+        <a href="#" class="social-btn">
+          <img src="/images/social-youtube.png" alt="YouTube">
+        </a>
+      </div>
+    </div>
+    
+    <div class="login-footer">
+      <span>Уже есть аккаунт?</span>
+      <RouterLink to="/login" class="add-button">Войти</RouterLink>
     </div>
   </div>
 </template>
@@ -75,6 +95,5 @@ const register = async () => {
 </script>
 
 <style scoped>
-/* Styles will be adapted from the original style.css */
-.auth-wrap { /* ... */ }
+/* All styles are now handled by the global style.css */
 </style>

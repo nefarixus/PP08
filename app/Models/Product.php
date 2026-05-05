@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +19,6 @@ class Product extends Model
         'img',
         'description',
         'price',
-        'rating',
     ];
 
     /**
@@ -30,8 +28,6 @@ class Product extends Model
      */
     protected $casts = [
         'price' => 'decimal:2',
-        'rating' => 'decimal:2',
-        'deleted_at' => 'datetime',
     ];
 
     /**

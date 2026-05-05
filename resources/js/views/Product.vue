@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="pd-wrap">Загрузка...</div>
+  <div v-if="loading" class="pd-wrap text-center">Загрузка...</div>
   <div v-else-if="product" class="pd-wrap">
     <article class="pd-card">
       <div class="pd-hero">
@@ -15,20 +15,20 @@
         <p v-else class="pd-desc pd-desc--empty">Описание скоро появится.</p>
 
         <div class="pd-actions">
-          <RouterLink to="/" class="pd-btn pd-btn-secondary">← К каталогу</RouterLink>
+          <RouterLink to="/" class="add-button">← К каталогу</RouterLink>
           <div v-if="!isLoggedIn">
-            <RouterLink to="/login" class="pd-btn pd-btn-primary">Войти, чтобы добавить или купить</RouterLink>
+            <RouterLink to="/login" class="add-button">Войти, чтобы добавить или купить</RouterLink>
           </div>
           <div v-else-if="isInLibrary">
-            <button type="button" class="pd-btn pd-btn-secondary" disabled>Уже в библиотеке</button>
+            <button type="button" class="add-button" disabled>Уже в библиотеке</button>
           </div>
           <div v-else-if="product.price > 0">
-            <RouterLink :to="`/checkout/${product.id}`" class="pd-btn pd-btn-primary">Купить</RouterLink>
+            <RouterLink :to="`/checkout/${product.id}`" class="checkout-link">Купить</RouterLink>
           </div>
           <div v-else>
             <button 
               type="button" 
-              class="pd-btn pd-btn-primary add-button"
+              class="add-button"
               @click="addToLibrary"
               :disabled="addingToLibrary"
             >
@@ -39,9 +39,9 @@
       </div>
     </article>
   </div>
-  <div v-else class="pd-wrap">
+  <div v-else class="pd-wrap text-center">
     <p>Продукт не найден.</p>
-    <RouterLink to="/" class="pd-btn pd-btn-secondary">← К каталогу</RouterLink>
+    <RouterLink to="/" class="add-button mt-3">← К каталогу</RouterLink>
   </div>
 </template>
 
@@ -63,6 +63,8 @@ const fetchProduct = async () => {
     const response = await fetch(`/api/products/${productId}`);
     if (response.ok) {
       product.value = await response.json();
+    } else {
+      console.error('Failed to fetch product:', await response.text());
     }
   } catch (error) {
     console.error('Failed to fetch product:', error);
@@ -80,6 +82,9 @@ const fetchUserLibrary = async () => {
       const libraryData = await response.json();
       userLibrary.value = libraryData.map((item: any) => item.id);
       isLoggedIn.value = true;
+    } else if (response.status === 401) {
+      // Not authenticated, that's fine
+      isLoggedIn.value = false;
     }
   } catch (error) {
     console.error('Failed to fetch user library:', error);
@@ -137,6 +142,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Styles will be adapted from the original style.css */
-.pd-wrap { /* ... */ }
+/* All styles are now handled by the global style.css */
 </style>

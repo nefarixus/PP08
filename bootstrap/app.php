@@ -1,5 +1,20 @@
 <?php
 
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Support\Facades\Facade;
+
+/*
+|--------------------------------------------------------------------------
+| Bootstrap Laravel Framework
+|--------------------------------------------------------------------------
+|
+| This script is responsible for loading the autoloader and creating the
+| application instance. It also handles console commands and exceptions.
+|
+*/
+
+require_once __DIR__.'/../vendor/autoload.php';
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

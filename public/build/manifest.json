@@ -1,36 +1,11 @@
 {
-  "images/batman-bg-2.jpg": {
-    "file": "assets/batman-bg-2-YZZ7zB0U.jpg",
-    "src": "images/batman-bg-2.jpg"
-  },
-  "images/bg-trend.png-1500.png": {
-    "file": "assets/bg-trend.png-1500-1LBeJax6.png",
-    "src": "images/bg-trend.png-1500.png"
-  },
-  "images/bg.png-1500.png": {
-    "file": "assets/bg.png-1500-BmDoZhI7.png",
-    "src": "images/bg.png-1500.png"
-  },
-  "images/bg.png-15001.png": {
-    "file": "assets/bg.png-15001-DMO9U_x3.png",
-    "src": "images/bg.png-15001.png"
-  },
-  "images/default-hero-bg.png": {
-    "file": "assets/default-hero-bg-BxudbeBX.png",
-    "src": "images/default-hero-bg.png"
-  },
   "resources/js/app.js": {
-    "file": "assets/app-a9den61V.js",
+    "file": "assets/app-DLBFldgZ.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-Dxi6l7Hx.css"
+      "assets/app-CaaxsFo6.css"
     ]
-  },
-  "styles/style.css": {
-    "file": "assets/style-RZz_rGU3.css",
-    "src": "styles/style.css",
-    "isEntry": true
   }
 }

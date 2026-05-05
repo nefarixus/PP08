@@ -4,7 +4,8 @@ import Product from '../views/Product.vue';
 import Library from '../views/Library.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
-// Admin and Checkout views will be added later
+import Checkout from '../views/Checkout.vue';
+// Admin view will be added later
 
 const routes = [
   { path: '/', component: Home },
@@ -12,8 +13,9 @@ const routes = [
   { path: '/library', component: Library },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
+  { path: '/checkout/:id', component: Checkout, props: true },
+  { path: '/profile', component: Library }, // Profile page uses Library component for now
   // { path: '/admin', component: () => import('../views/Admin.vue') },
-  // { path: '/checkout/:id', component: () => import('../views/Checkout.vue'), props: true },
 ];
 
 const router = createRouter({

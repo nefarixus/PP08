@@ -14,10 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // Only return non-deleted products
-        $products = Product::whereNull('deleted_at')
-            ->select('id', 'name', 'img', 'price')
-            ->get();
+        // Return all products (no soft deletes in this DB)
+        $products = Product::select('id', 'name', 'img', 'price')->get();
 
         return response()->json($products);
     }
@@ -30,7 +28,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::whereNull('deleted_at')->find($id);
+        $product = Product::find($id);
 
         if (!$product) {
             return response()->json(['message' => 'Product not found.'], 404);

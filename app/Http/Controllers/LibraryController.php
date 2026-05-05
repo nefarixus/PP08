@@ -18,7 +18,6 @@ class LibraryController extends Controller
     {
         $user = $request->user();
         $library = $user->products()
-            ->whereNull('products.deleted_at')
             ->select('products.id', 'products.name', 'products.img', 'products.price')
             ->get();
 
