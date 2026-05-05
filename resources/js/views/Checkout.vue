@@ -1,4 +1,4 @@
-<template>
+Class "App\Http\Controllers\Controller" not found<template>
   <main class="checkout-page">
     <h1 class="checkout-page-title">Оформление</h1>
 
