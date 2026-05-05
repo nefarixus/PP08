@@ -41,7 +41,7 @@
       <div v-if="isLoggedIn" class="border-t border-[#383838] pt-5 mt-5">
         <div class="flex items-center justify-between mb-3">
           <span class="text-white font-medium">{{ userLogin }}</span>
-          <button @click="logout" class="text-gray-400 hover:text-white text-sm transition-colors">Выйти</button>
+          <button @click="handleLogout" class="text-gray-400 hover:text-white text-sm transition-colors">Выйти</button>
         </div>
       </div>
       
@@ -70,51 +70,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
+import { useAuth } from '../../stores/auth';
 
 const router = useRouter();
-const isLoggedIn = ref(false);
-const userLogin = ref('');
-const userRole = ref('');
+const { isLoggedIn, userLogin, isAdmin, checkAuth, logout } = useAuth();
 
-const isAdmin = computed(() => userRole.value === 'admin');
-
-const checkAuth = async () => {
-  try {
-    // This will be implemented after API routes are created
-    // For now, it's a placeholder
-    const response = await fetch('/api/user', {
-      credentials: 'include'
-    });
-    if (response.ok) {
-      const userData = await response.json();
-      isLoggedIn.value = true;
-      userLogin.value = userData.login;
-      userRole.value = userData.role;
-    } else {
-      isLoggedIn.value = false;
-    }
-  } catch (error) {
-    console.error('Auth check failed:', error);
-    isLoggedIn.value = false;
-  }
-};
-
-const logout = async () => {
-  try {
-    // This will be implemented after API routes are created
-    await fetch('/api/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
-    isLoggedIn.value = false;
-    userLogin.value = '';
-    userRole.value = '';
-    router.push('/login');
-  } catch (error) {
-    console.error('Logout failed:', error);
-  }
+const handleLogout = async () => {
+  await logout();
+  router.push('/login');
 };
 
 onMounted(() => {

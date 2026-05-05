@@ -286,16 +286,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted, nextTick, watch } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import { apiPost, apiGet } from '../utils/api';
+import { useAuth } from '../stores/auth';
 
 // ===================== Data =====================
 const products = ref<any[]>([]);
 const loading = ref(true);
 const userLibrary = ref<number[]>([]);
-const isLoggedIn = ref(false);
 const addingToLibrary = ref<Record<number, boolean>>({});
+const { isLoggedIn, checkAuth } = useAuth();
 const router = useRouter();
 
 // ===================== Slider refs =====================
@@ -428,19 +429,28 @@ const fetchProducts = async () => {
 };
 
 const fetchUserLibrary = async () => {
+  if (!isLoggedIn.value) {
+    userLibrary.value = [];
+    return;
+  }
   try {
     const response = await apiGet('/api/user/library');
     if (response.ok) {
       const data = await response.json();
       userLibrary.value = data.map((item: any) => item.id);
-      isLoggedIn.value = true;
-    } else {
-      isLoggedIn.value = false;
     }
   } catch {
-    isLoggedIn.value = false;
+    userLibrary.value = [];
   }
 };
+
+watch(isLoggedIn, (loggedIn) => {
+  if (loggedIn) {
+    fetchUserLibrary();
+  } else {
+    userLibrary.value = [];
+  }
+});
 
 const isInLibrary = (productId: number) => userLibrary.value.includes(productId);
 
@@ -494,7 +504,7 @@ onMounted(() => {
 
   // Fetch data
   fetchProducts();
-  fetchUserLibrary();
+  checkAuth().then(() => fetchUserLibrary());
 });
 </script>
 

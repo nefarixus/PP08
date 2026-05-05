@@ -62,7 +62,7 @@ const error = ref('');
 const loading = ref(false);
 const registered = ref(false);
 
-const { checkAuth } = useAuth();
+const { setUser } = useAuth();
 
 onMounted(() => {
   if (route.query.registered === '1') {
@@ -83,8 +83,7 @@ const login = async () => {
     const data = await response.json();
 
     if (response.ok) {
-      // Обновляем глобальный стор — сайдбар и все компоненты реагируют мгновенно
-      await checkAuth();
+      setUser(data.user);
       const redirectTo = (route.query.redirect as string) || '/';
       router.push(redirectTo);
     } else {

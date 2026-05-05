@@ -1,18 +1,26 @@
 import { ref, computed } from 'vue';
 import { apiGet, apiPost } from '../utils/api';
 
-// Модульный уровень — синглтон, общий для всех компонентов
+const STORAGE_KEY = 'auth_user';
+
 const isLoggedIn = ref(false);
 const userLogin = ref('');
 const userEmail = ref('');
 const userRole = ref('');
 const isAdmin = computed(() => userRole.value === 'admin');
 
-const _setUser = (userData: any) => {
+let _authPromise: Promise<void> | null = null;
+
+export const setUser = (userData: any) => {
   isLoggedIn.value = true;
   userLogin.value = userData.login || '';
   userEmail.value = userData.email || '';
   userRole.value = userData.role || '';
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+    login: userLogin.value,
+    email: userEmail.value,
+    role: userRole.value,
+  }));
 };
 
 const _clearUser = () => {
@@ -20,19 +28,47 @@ const _clearUser = () => {
   userLogin.value = '';
   userEmail.value = '';
   userRole.value = '';
+  localStorage.removeItem(STORAGE_KEY);
 };
 
-export const checkAuth = async () => {
+const _loadFromStorage = (): boolean => {
   try {
-    const response = await apiGet('/api/user');
-    if (response.ok) {
-      _setUser(await response.json());
-    } else {
-      _clearUser();
-    }
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    isLoggedIn.value = true;
+    userLogin.value = data.login || '';
+    userEmail.value = data.email || '';
+    userRole.value = data.role || '';
+    return true;
   } catch {
-    _clearUser();
+    return false;
   }
+};
+
+export const checkAuth = (): Promise<void> => {
+  if (_authPromise) return _authPromise;
+
+  const hadStoredSession = _loadFromStorage();
+
+  if (!hadStoredSession) {
+    _authPromise = Promise.resolve();
+    return _authPromise;
+  }
+
+  _authPromise = apiGet('/api/user')
+    .then(response => {
+      if (response.ok) {
+        return response.json().then(setUser);
+      } else {
+        _clearUser();
+      }
+    })
+    .catch(() => {
+      _clearUser();
+    });
+
+  return _authPromise;
 };
 
 export const logout = async () => {
@@ -40,8 +76,9 @@ export const logout = async () => {
     await apiPost('/api/logout');
   } catch {}
   _clearUser();
+  _authPromise = null;
 };
 
 export function useAuth() {
-  return { isLoggedIn, userLogin, userEmail, userRole, isAdmin, checkAuth, logout };
+  return { isLoggedIn, userLogin, userEmail, userRole, isAdmin, checkAuth, logout, setUser };
 }
