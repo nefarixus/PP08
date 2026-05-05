@@ -13,6 +13,11 @@
         <div v-if="error" class="login-error">{{ error }}</div>
 
         <div class="form-group">
+          <label for="login">Логин</label>
+          <input v-model="login" type="text" id="login" name="login" required>
+        </div>
+
+        <div class="form-group">
           <label for="email">Email</label>
           <input v-model="email" type="email" id="email" name="email" required>
         </div>
@@ -53,6 +58,7 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import { apiPost } from '../utils/api';
 
+const login = ref('');
 const email = ref('');
 const password = ref('');
 const error = ref('');
@@ -66,6 +72,7 @@ const register = async () => {
 
   try {
     const response = await apiPost('/api/register', {
+      login: login.value,
       email: email.value,
       password: password.value,
     });
@@ -75,10 +82,16 @@ const register = async () => {
     if (response.ok) {
       success.value = true;
       registeredEmail.value = email.value;
+      login.value = '';
       email.value = '';
       password.value = '';
     } else {
-      error.value = data.message || 'Ошибка при регистрации.';
+      if (data.errors) {
+        const firstError = Object.values(data.errors)[0];
+        error.value = Array.isArray(firstError) ? firstError[0] as string : String(firstError);
+      } else {
+        error.value = data.message || 'Ошибка при регистрации.';
+      }
     }
   } catch (err) {
     console.error('Registration error:', err);
