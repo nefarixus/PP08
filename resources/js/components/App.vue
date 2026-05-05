@@ -57,7 +57,7 @@
           <p class="login">{{ userLogin }}</p>
           <RouterLink to="/library" class="account">Мой аккаунт</RouterLink>
           <RouterLink v-if="isAdmin" to="/admin" class="account account-admin">Админка</RouterLink>
-          <a href="#" @click.prevent="logout" class="account account-logout" style="color: #ff4444; border: 0;">Выход</a>
+          <a href="#" @click.prevent="handleLogout" class="account account-logout" style="color: #ff4444; border: 0;">Выход</a>
         </div>
         <div v-else class="auth-buttons">
           <RouterLink to="/login" class="login">Войти или <br> Зарегестрироваться</RouterLink>
@@ -99,68 +99,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, provide } from 'vue';
-import { RouterLink, useRouter, useRoute } from 'vue-router';
-import { apiPost, apiGet } from '../utils/api';
+import { ref, onMounted } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
+import { useAuth } from '../stores/auth';
 
 const router = useRouter();
-const route = useRoute();
 const searchQuery = ref('');
-const isLoggedIn = ref(false);
-const userLogin = ref('');
-const userRole = ref('');
-const isAdmin = ref(false);
 
-const checkAuth = async () => {
-  console.debug('[Auth] checkAuth() called, path:', route.path);
-  try {
-    const response = await apiGet('/api/user');
-    console.debug('[Auth] /api/user response status:', response.status);
-    if (response.ok) {
-      const userData = await response.json();
-      console.debug('[Auth] Logged in as:', userData.login, 'role:', userData.role);
-      isLoggedIn.value = true;
-      userLogin.value = userData.login;
-      userRole.value = userData.role;
-      isAdmin.value = userData.role === 'admin';
-    } else if (response.status === 401) {
-      console.debug('[Auth] Not authenticated (401)');
-      isLoggedIn.value = false;
-      userLogin.value = '';
-      userRole.value = '';
-      isAdmin.value = false;
-    } else {
-      console.warn('[Auth] Unexpected status:', response.status);
-      isLoggedIn.value = false;
-    }
-  } catch (error) {
-    console.warn('[Auth] checkAuth network error:', error);
-    isLoggedIn.value = false;
-  }
-};
+const { isLoggedIn, userLogin, isAdmin, checkAuth, logout } = useAuth();
 
-// Повторно проверяем авторизацию при каждом переходе между страницами
-watch(() => route.path, async (newPath, oldPath) => {
-  console.debug('[Auth] Route changed:', oldPath, '->', newPath);
-  await checkAuth();
-});
-
-// Предоставляем checkAuth дочерним компонентам (Login, Register)
-provide('checkAuth', checkAuth);
-provide('isLoggedIn', isLoggedIn);
-
-const logout = async () => {
-  try {
-    await apiPost('/api/logout');
-  } catch (error) {
-    console.warn('[Auth] Logout request failed:', error);
-  } finally {
-    isLoggedIn.value = false;
-    userLogin.value = '';
-    userRole.value = '';
-    isAdmin.value = false;
-    router.push('/login');
-  }
+const handleLogout = async () => {
+  await logout();
+  router.push('/login');
 };
 
 const search = () => {

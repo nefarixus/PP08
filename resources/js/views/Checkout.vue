@@ -1,4 +1,4 @@
-Class "App\Http\Controllers\Controller" not found<template>
+<template>
   <main class="checkout-page">
     <h1 class="checkout-page-title">Оформление</h1>
 
@@ -55,17 +55,19 @@ Class "App\Http\Controllers\Controller" not found<template>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter, RouterLink } from 'vue-router';
 import { apiPost, apiGet } from '../utils/api';
+import { useAuth } from '../stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const productId = Number(route.params.id);
 const product = ref<any>(null);
 const loading = ref(true);
-const isLoggedIn = ref(false);
 const processing = ref(false);
 const paid = ref(false);
 const paidMessage = ref('');
 const error = ref('');
+
+const { isLoggedIn } = useAuth();
 
 const fetchProduct = async () => {
   try {
@@ -75,15 +77,6 @@ const fetchProduct = async () => {
     }
   } catch (err) {
     console.error('Failed to fetch product:', err);
-  }
-};
-
-const checkAuth = async () => {
-  try {
-    const response = await apiGet('/api/user');
-    isLoggedIn.value = response.ok;
-  } catch {
-    isLoggedIn.value = false;
   }
 };
 
@@ -115,7 +108,7 @@ const completePayment = async () => {
 };
 
 onMounted(async () => {
-  await Promise.all([fetchProduct(), checkAuth()]);
+  await fetchProduct();
   loading.value = false;
 });
 </script>

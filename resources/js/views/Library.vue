@@ -44,47 +44,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { RouterLink } from 'vue-router';
 import { apiGet } from '../utils/api';
+import { useAuth } from '../stores/auth';
 
 const library = ref<any[]>([]);
 const loading = ref(true);
-const isLoggedIn = ref(false);
-const userLogin = ref('');
-const userEmail = ref('');
+
+const { isLoggedIn, userLogin, userEmail } = useAuth();
 
 const userInitial = computed(() => {
   const name = userLogin.value || userEmail.value;
   return name ? name.charAt(0).toUpperCase() : '?';
 });
 
-const fetchUserLibrary = async () => {
+const fetchLibrary = async () => {
+  if (!isLoggedIn.value) {
+    loading.value = false;
+    return;
+  }
   try {
-    const userResponse = await apiGet('/api/user');
-    if (!userResponse.ok) {
-      isLoggedIn.value = false;
-      return;
-    }
-    const userData = await userResponse.json();
-    isLoggedIn.value = true;
-    userLogin.value = userData.login || '';
-    userEmail.value = userData.email || '';
-
     const libraryResponse = await apiGet('/api/user/library');
     if (libraryResponse.ok) {
       library.value = await libraryResponse.json();
     }
   } catch (error) {
-    console.error('Failed to fetch user library:', error);
-    isLoggedIn.value = false;
+    console.error('Failed to fetch library:', error);
   } finally {
     loading.value = false;
   }
 };
 
+// Перезагружаем когда меняется статус авторизации
+watch(isLoggedIn, (loggedIn) => {
+  if (loggedIn) {
+    fetchLibrary();
+  } else {
+    library.value = [];
+  }
+});
+
 onMounted(() => {
-  fetchUserLibrary();
+  fetchLibrary();
 });
 </script>
 

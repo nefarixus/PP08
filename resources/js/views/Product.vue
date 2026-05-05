@@ -52,17 +52,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 import { apiPost, apiGet } from '../utils/api';
+import { useAuth } from '../stores/auth';
 
 const route = useRoute();
 const productId = Number(route.params.id);
 const product = ref<any>(null);
 const loading = ref(true);
-const isLoggedIn = ref(false);
 const userLibrary = ref<number[]>([]);
 const addingToLibrary = ref(false);
+
+const { isLoggedIn } = useAuth();
 
 const fetchProduct = async () => {
   try {
@@ -78,19 +80,25 @@ const fetchProduct = async () => {
 };
 
 const fetchUserLibrary = async () => {
+  if (!isLoggedIn.value) {
+    userLibrary.value = [];
+    return;
+  }
   try {
     const response = await apiGet('/api/user/library');
     if (response.ok) {
       const libraryData = await response.json();
       userLibrary.value = libraryData.map((item: any) => item.id);
-      isLoggedIn.value = true;
-    } else if (response.status === 401) {
-      isLoggedIn.value = false;
     }
   } catch {
-    isLoggedIn.value = false;
+    userLibrary.value = [];
   }
 };
+
+// Перезагружаем библиотеку когда меняется статус авторизации
+watch(isLoggedIn, () => {
+  fetchUserLibrary();
+});
 
 const isInLibrary = computed(() => userLibrary.value.includes(productId));
 
