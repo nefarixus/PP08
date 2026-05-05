@@ -1,0 +1,6 @@
+/.local
+/node_modules
+/vendor
+/public/build
+/storage/*.key
+.DS_Store
