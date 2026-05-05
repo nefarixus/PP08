@@ -1,0 +1,23 @@
+--> composer update
+[32mLoading composer repositories with package information[39m
+[32mUpdating dependencies[39m
+Nothing to modify in lock file
+[32mInstalling dependencies from lock file (including require-dev)[39m
+Nothing to install, update or remove
+[32mGenerating optimized autoload files[39m
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+[32m80 packages you are using are looking for funding.[39m
+[32mUse the `composer fund` command to find out more![39m
+> @php artisan vendor:publish --tag=laravel-assets --ansi --force
+
+  [37;44m INFO [39;49m No publishable resources for tag [1m[laravel-assets][22m.  
+
+[32mNo security vulnerability advisories found.[39m
+--> composer install
+[32mInstalling dependencies from lock file (including require-dev)[39m
+[32mVerifying lock file contents can be installed on current platform.[39m
+Nothing to install, update or remove
+[32mGenerating optimized autoload files[39m
+> Illuminate\Foundation\ComposerScripts::postAutoloadDump
+[32m80 packages you are using are looking for funding.[39m
+[32mUse the `composer fund` command to find out more![39m
