@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -28,7 +29,6 @@ class CheckoutController extends Controller
             return response()->json(['message' => 'Этот товар бесплатный.'], 400);
         }
 
-        // Already in library
         if ($user->products()->where('product_id', $product->id)->exists()) {
             return response()->json(['message' => 'Товар уже в вашей библиотеке.'], 400);
         }
@@ -36,31 +36,38 @@ class CheckoutController extends Controller
         try {
             DB::beginTransaction();
 
-            // Create order (paid_test immediately — test payment)
+            $now = now();
+
             $orderId = DB::table('orders')->insertGetId([
-                'user_id' => $user->id,
-                'status'  => 'paid_test',
-                'total'   => $product->price,
+                'user_id'    => $user->id,
+                'status'     => 'paid_test',
+                'total'      => $product->price,
+                'created_at' => $now,
+                'updated_at' => $now,
             ]);
 
-            // Create order item
             DB::table('order_items')->insert([
                 'order_id'          => $orderId,
                 'product_id'        => $product->id,
                 'price_at_purchase' => $product->price,
+                'created_at'        => $now,
+                'updated_at'        => $now,
             ]);
 
-            // Add to user library
-            DB::table('user_products')->insert([
-                'user_id'    => $user->id,
-                'product_id' => $product->id,
+            // Используем Eloquent-связь чтобы правильно заполнить created_at/updated_at
+            $user->products()->attach($product->id, [
+                'created_at' => $now,
+                'updated_at' => $now,
             ]);
 
             DB::commit();
 
+            Log::info('[Checkout] User ' . $user->id . ' purchased product ' . $product->id . ' order #' . $orderId);
+
             return response()->json(['message' => 'Покупка успешно завершена! Игра добавлена в библиотеку.']);
         } catch (\Throwable $e) {
             DB::rollBack();
+            Log::error('[Checkout] Error: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine());
             return response()->json(['message' => 'Ошибка при обработке платежа: ' . $e->getMessage()], 500);
         }
     }

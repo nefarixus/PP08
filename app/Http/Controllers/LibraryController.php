@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class LibraryController extends Controller
@@ -18,14 +17,14 @@ class LibraryController extends Controller
             $user = $request->user();
 
             if (!$user) {
-                Log::warning('[Library] index called but user is null — auth middleware may have failed');
+                Log::warning('[Library] index called but user is null');
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
 
             Log::info('[Library] Fetching library for user ID: ' . $user->id . ' login: ' . $user->login);
 
             $library = $user->products()
-                ->select('products.id', 'products.name', 'products.img', 'products.price')
+                ->select('products.id', 'products.name', 'products.img', 'products.price', 'products.rating')
                 ->get();
 
             Log::info('[Library] Found ' . $library->count() . ' items for user ' . $user->id);
@@ -33,7 +32,6 @@ class LibraryController extends Controller
             return response()->json($library);
         } catch (\Throwable $e) {
             Log::error('[Library] index error: ' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine());
-            Log::error('[Library] Stack trace: ' . $e->getTraceAsString());
             return response()->json([
                 'message' => 'Ошибка сервера при загрузке библиотеки: ' . $e->getMessage()
             ], 500);
@@ -61,7 +59,11 @@ class LibraryController extends Controller
                 return response()->json(['message' => 'Product is already in your library.'], 200);
             }
 
-            $user->products()->attach($product->id);
+            $now = now();
+            $user->products()->attach($product->id, [
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
 
             Log::info('[Library] Product ' . $product->id . ' added for user ' . $user->id);
 

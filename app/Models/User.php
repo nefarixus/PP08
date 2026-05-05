@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\Product;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,14 +13,15 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'login',
         'email',
+        'email_verified_at',
         'password',
         'role',
-        'email_verified_at',
+        'remember_token',
     ];
 
     protected $hidden = [
@@ -35,6 +37,6 @@ class User extends Authenticatable
     public function products()
     {
         return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id')
-            ->withPivot('added_at');
+            ->withTimestamps();
     }
 }
