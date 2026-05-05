@@ -99,11 +99,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { RouterLink, useRouter } from 'vue-router';
+import { ref, onMounted, watch, provide } from 'vue';
+import { RouterLink, useRouter, useRoute } from 'vue-router';
 import { apiPost, apiGet } from '../utils/api';
 
 const router = useRouter();
+const route = useRoute();
 const searchQuery = ref('');
 const isLoggedIn = ref(false);
 const userLogin = ref('');
@@ -111,39 +112,49 @@ const userRole = ref('');
 const isAdmin = ref(false);
 
 const checkAuth = async () => {
+  console.debug('[Auth] checkAuth() called, path:', route.path);
   try {
     const response = await apiGet('/api/user');
+    console.debug('[Auth] /api/user response status:', response.status);
     if (response.ok) {
       const userData = await response.json();
+      console.debug('[Auth] Logged in as:', userData.login, 'role:', userData.role);
       isLoggedIn.value = true;
       userLogin.value = userData.login;
       userRole.value = userData.role;
       isAdmin.value = userData.role === 'admin';
     } else if (response.status === 401) {
-      // User is not authenticated, which is normal for unauthenticated users
+      console.debug('[Auth] Not authenticated (401)');
       isLoggedIn.value = false;
+      userLogin.value = '';
+      userRole.value = '';
+      isAdmin.value = false;
     } else {
-      // Other error occurred
-      console.error('Auth check failed with status:', response.status);
+      console.warn('[Auth] Unexpected status:', response.status);
       isLoggedIn.value = false;
     }
   } catch (error) {
-    console.error('Auth check failed:', error);
+    console.warn('[Auth] checkAuth network error:', error);
     isLoggedIn.value = false;
   }
 };
 
+// Повторно проверяем авторизацию при каждом переходе между страницами
+watch(() => route.path, async (newPath, oldPath) => {
+  console.debug('[Auth] Route changed:', oldPath, '->', newPath);
+  await checkAuth();
+});
+
+// Предоставляем checkAuth дочерним компонентам (Login, Register)
+provide('checkAuth', checkAuth);
+provide('isLoggedIn', isLoggedIn);
+
 const logout = async () => {
   try {
     await apiPost('/api/logout');
-    isLoggedIn.value = false;
-    userLogin.value = '';
-    userRole.value = '';
-    isAdmin.value = false;
-    router.push('/login');
   } catch (error) {
-    console.error('Logout failed:', error);
-    // Even if logout fails, clear local state
+    console.warn('[Auth] Logout request failed:', error);
+  } finally {
     isLoggedIn.value = false;
     userLogin.value = '';
     userRole.value = '';
@@ -154,7 +165,7 @@ const logout = async () => {
 
 const search = () => {
   if (searchQuery.value.trim()) {
-    console.log('Search query:', searchQuery.value);
+    console.log('[Search] query:', searchQuery.value);
   }
 };
 

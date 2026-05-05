@@ -11,8 +11,8 @@
         <div v-if="error" class="login-error">{{ error }}</div>
 
         <div class="form-group">
-          <label for="email">Email</label>
-          <input v-model="email" type="email" id="email" name="email" required>
+          <label for="email">Email или логин</label>
+          <input v-model="email" type="text" id="email" name="email" required>
         </div>
 
         <div class="form-group">
@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import { useRouter, useRoute, RouterLink } from 'vue-router';
 import { apiPost } from '../utils/api';
 
@@ -61,6 +61,9 @@ const error = ref('');
 const loading = ref(false);
 const registered = ref(false);
 
+// Получаем функцию обновления авторизации из App.vue
+const checkAuth = inject<() => Promise<void>>('checkAuth');
+
 onMounted(() => {
   if (route.query.registered === '1') {
     registered.value = true;
@@ -71,6 +74,8 @@ const login = async () => {
   error.value = '';
   loading.value = true;
 
+  console.debug('[Login] Attempting login for:', email.value);
+
   try {
     const response = await apiPost('/api/login', {
       login: email.value,
@@ -78,15 +83,21 @@ const login = async () => {
     });
 
     const data = await response.json();
+    console.debug('[Login] Response status:', response.status, 'data:', data);
 
     if (response.ok) {
+      console.debug('[Login] Success, refreshing auth state...');
+      // Обновляем состояние авторизации в сайдбаре немедленно
+      if (checkAuth) {
+        await checkAuth();
+      }
       const redirectTo = (route.query.redirect as string) || '/';
       router.push(redirectTo);
     } else {
       error.value = data.message || 'Неверный email или пароль.';
     }
   } catch (err) {
-    console.error('Login error:', err);
+    console.error('[Login] Network error:', err);
     error.value = 'Произошла ошибка при входе. Пожалуйста, попробуйте еще раз.';
   } finally {
     loading.value = false;
