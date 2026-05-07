@@ -7156,3 +7156,13 @@ Did you mean one of these?
 [2026-05-05 15:48:43] local.INFO: [Library] Found 4 items for user 13  
 [2026-05-05 15:48:50] local.INFO: [Library] Fetching library for user ID: 13 login: admin  
 [2026-05-05 15:48:50] local.INFO: [Library] Found 4 items for user 13  
+[2026-05-05 16:06:47] local.INFO: [Library] Fetching library for user ID: 13 login: admin  
+[2026-05-05 16:06:47] local.INFO: [Library] Found 4 items for user 13  
+[2026-05-05 16:06:49] local.INFO: [Library] Fetching library for user ID: 13 login: admin  
+[2026-05-05 16:06:49] local.INFO: [Library] Found 4 items for user 13  
+[2026-05-05 16:06:57] local.INFO: User authenticated: ID 13, Login: admin  
+[2026-05-05 16:06:58] local.INFO: [Library] Fetching library for user ID: 13 login: admin  
+[2026-05-05 16:06:58] local.INFO: [Library] Found 4 items for user 13  
+[2026-05-07 03:29:28] local.INFO: [Library] Fetching library for user ID: 13 login: admin  
+[2026-05-07 03:29:28] local.INFO: [Library] Found 4 items for user 13  
+[2026-05-07 03:29:38] local.INFO: [Admin] Product soft-deleted: id=14  
